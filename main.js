@@ -1,9 +1,28 @@
 "use strict";
 
-var DEBUG = false; // if true, allows placing any card in the Flower slot, and dragons are always movable.
-var DEBUG_STYLE = false; // if true, the alternate stylesheet is loaded even if images load correctly.
+/**
+ * if true, allows placing any card in the Flower slot, and dragons are always movable.
+ * @type {Boolean}
+ */
+var DEBUG = false;
 
+/**
+ * if true, the alternate stylesheet is loaded even if images load correctly.
+ * @type {Boolean}
+ */
+var DEBUG_STYLE = false;
+
+/**
+ * Time in milliseconds cards take moving around
+ * @type {Number}
+ */
 var CARD_ANIMATION_SPEED = 200;
+
+/**
+ * Gap in pixels between cards when fanned out.
+ * @type {Number}
+ */
+var CARD_STACK_GAP = 30;
 
 var SUITS = {
 	BAMBOO: {
@@ -42,7 +61,18 @@ var SPECIAL = {
 	}
 };
 
+/**
+ * Number of each type of dragon to create.
+ * @type {Number}
+ */
+var DRAGON_COUNT = 4;
+
+/**
+ * Height in px of the tray slots.
+ * @type {Number}
+ */
 var SLOT_TALL = 500;
+
 /**
  * Contains groupings of slots, which will have an "element" property added.
  * @type {Object}
@@ -73,6 +103,12 @@ var SLOTS = {
 	]
 };
 
+/**
+ * Creates a card of the given value and suit.
+ * @param  {Integer} value
+ * @param  {SUIT} suit 
+ * @return {Card}
+ */
 function createCard(value, suit) {
 	var smallImg = 'solitaire/small_icons/' + suit.small + '.png';
 	var largeImg = 'solitaire/large_icons/' + suit.prefix_large + '_' + value + '.png';
@@ -104,6 +140,11 @@ function createCard(value, suit) {
 	return c;
 }
 
+/**
+ * Creates a card of the given type.
+ * @param  {SPECIAL} special Card type definitition from the SPECIAL table.
+ * @return {Card}
+ */
 function createSpecialCard(special) {
 	var smallImg = 'solitaire/small_icons/' + special.small + '.png';
 	var largeImg = 'solitaire/large_icons/' + special.large + '.png';
@@ -130,13 +171,11 @@ function createSpecialCard(special) {
 	return c;
 }
 
-var CARD_STACK_GAP = 30;
-
 /**
- * Places a card at the given level
- * @param {Card} card  [description]
- * @param {Subslot} slot  [description]
- * @param {Integer} depth How high up the card is. Higher is closer to the top. When the stack is fanned, it will be stacked downwards as well.
+ * Places a card at the given level on the given slot.
+ * @param {Card} card  The card to place.
+ * @param {Subslot} slot  The destination slot
+ * @param {Integer} depth How high up the card is. Higher values are further up the stack. When fanned out, higher values are displayed closer to the bottom.
  */
 function insertCard(card, slot, depth) {
 	if (card.slot !== undefined) {
@@ -173,6 +212,7 @@ function insertCard(card, slot, depth) {
 /**
  * Randomize array element order in-place.
  * Using Durstenfeld shuffle algorithm.
+ * @param {Array[?]} array Array to shuffle in-place
  */
 function shuffleArray(array) {
     for (var i = array.length - 1; i > 0; i--) {
@@ -183,6 +223,11 @@ function shuffleArray(array) {
     }
 }
 
+/**
+ * Creates the elements for the slots, and prepares them to accept cards.
+ * @param  {SLOTS} slots The SLOTS object, a set of arrays, each containing slots.
+ * @param  {HTMLElement} board The element slots are parented to.
+ */
 function populateSlots(slots, board) {
 	// Create the slots
 	for (var slotname in slots) {
@@ -205,11 +250,8 @@ function populateSlots(slots, board) {
 	}
 }
 
-// Create the cards
-var DRAGON_COUNT = 4;
-
 /**
- * Creates all the cards in a deck.
+ * Creates all the cards in a full deck.
  * @return {Array[Card]} 
  */
 function makeDeck() {
@@ -243,6 +285,12 @@ function makeDeck() {
 	return cards;
 }
 
+/**
+ * Places the given cards on the given board
+ * @param  {Array[Card]} cards   List of cards to place
+ * @param  {HTMLElement} board   Parent element for the cards.
+ * @param  {SLOT} traySet An array of individual slots, (ex: SLOTS.TRAY)
+ */
 function placeCardsInTray(cards, board, traySet) {
 	var row = 0;
 	var col = 0;
@@ -261,8 +309,7 @@ function placeCardsInTray(cards, board, traySet) {
 }
 
 /**
- * Makes sure there are no gaps between cards in the tray.
- * @return {[type]} [description]
+ * Makes sure there are no gaps between cards in the tray, by moving them towards the top to fill the gap.
  */
 function balanceCards() {
 	for (var i = 0; i < SLOTS.TRAY.length; i++) {
@@ -321,6 +368,12 @@ function getTopSpecialCards(type) {
 	return list;
 }
 
+/**
+ * Gets the card with the given value and suit, if any.
+ * @param  {Integer} value Card value
+ * @param  {SUIT} suit  Card suit
+ * @return {Card}       The found card, or undefined.
+ */
 function getCard(value, suit) {
 	for (var slotName in SLOTS) {
 		if (SLOTS.hasOwnProperty(slotName)) {
@@ -337,7 +390,7 @@ function getCard(value, suit) {
 }
 
 /**
- * Gets whether the dragons of the given type are all on the top of their respective stack.
+ * Gets whether the dragons of the given type are all on the top of their respective stack, and a slot is open for them to go to.
  * @param  {SPECIAL}  type 
  * @return {Boolean}      Whether the number of top cards is equal to the DRAGON_COUNT.
  */
@@ -423,8 +476,6 @@ function onFieldUpdated() {
 		}
 	}
 
-	console.debug("Movable tops:", movableTops);
-	console.trace();
 	for (var i = 0; i < movableTops.length; i++) {
 		var canOut = true;
 		var outSlot = undefined;
@@ -477,12 +528,18 @@ function onFieldUpdated() {
 	if (allGood) {
 		// wait for any possible animations to finish.
 		setTimeout(function () {
-			console.log("Board clear!");
 			victoryScreen();
 		}, CARD_ANIMATION_SPEED);
 	}
 }
 
+/**
+ * Moves a card to a slot and position, then smoothly animates the transition.
+ * @param  {Card}   card     The card to move
+ * @param  {SLOT}   slot     The destination slot for the card
+ * @param  {Integer}   depth    The position in the slot for the card
+ * @param  {Function} callback Called when the animation is complete with the arguments (card, slot, depth)
+ */
 function tweenCard(card, slot, depth, callback) {
 	var oldOffset = card.element.offset();
 	insertCard(card, slot, depth);
@@ -617,6 +674,11 @@ function canPlaceStack(stack, destSlot, dest) {
 	}
 }
 
+/**
+ * Sets up a new game with randomly placed cards.
+ * @param  {Array[Card]} cards List of cards which will be placed.
+ * @param  {HTMLElement} board The container for the cards.
+ */
 function startNewGame(cards, board) {
 	// TODO: start cards face down in the flower slot, then move them into place.
 	
@@ -627,6 +689,9 @@ function startNewGame(cards, board) {
 }
 
 var looper;
+/**
+ * Runs the victory screen, where cards drop down the screen.
+ */
 function victoryScreen() {
 	var cards = [];
 
@@ -718,9 +783,9 @@ $('#solveGame').click(function() {
 });
 
 /**
- * Creates a stack of all 
+ * Creates a stack of all cards including and on top of the given card.
  * @param  {HTMLElement} cardElement The element for the card.
- * @return {Array[Card]}      A list of cards, including and on top of the given card.
+ * @return {Array[Card]}      An array of cards
  */
 function getStackFromCardElement(cardElement) {
 	var card = $(cardElement).data('card');
@@ -758,17 +823,6 @@ $(".slot").droppable({
 
         for (var i = 0; i < stack.length; i++) {
 			insertCard(stack[i], slot, slot.cards.length);
-			
-			/*
-			// initially set the card's position to that of the helper, so it tweens from the held card location to the final location.
-			console.log(ui.helper.position().top, stack[i].element.position().top);
-			stack[i].element.css({
-				//top: ui.helper.position().top,
-				top: ui.helper.position().top + CARD_STACK_GAP * i,
-				left: ui.helper.position().left
-			});
-			tweenCard(stack[i], slot, slot.cards.length);
-			*/
     	}
     	onFieldUpdated();
 	},
@@ -837,17 +891,18 @@ $(".card").draggable({
 	}
 });
 
+/**
+ * Loads the alternate stylesheet for when the images are missing.
+ */
 function loadAltStyle() {
 	$('head').append('<link rel="stylesheet" type="text/css" href="noimages.css">');
 }
 
 var triggeredWarning = false;
-console.log('why');
 $('#btn_dragon_red').on('error', function (data, handler) {
 	if (!triggeredWarning) {
-		console.log(arguments);
-		alert('Could not load an image! Did you copy the "textures/solitaire" folder into the "solitaire" folder of the webpage?');
-		
+		alert('Could not load an image! Did you copy the game\'s "Content/textures/solitaire" folder into the "solitaire" folder of the webpage?');
+
 		loadAltStyle();
 	}
 	triggeredWarning = true;

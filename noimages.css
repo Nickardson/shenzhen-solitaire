@@ -6,22 +6,94 @@
 }
 
 .slot {
-	background-color: #333333;
+	border: 2px dashed rgba(255, 255, 255, 0.25);
+	box-sizing: border-box;
+}
+
+#board {
+	background-color: #012f1b;
 }
 
 .btn-dragon {
-	border-radius: 50%;
+	background-color: #b09d6f;
+	font-size: 40px;
 	box-sizing: border-box;
-	border: 20px solid #B0A46A;
-	color: transparent;
+	border-style: none;
+	font-weight: bold;
 }
 
 #btn_dragon_red {
-	background-color: red;
+	color: #ae2810;
+	text-shadow: 1px 1px 0 #000;
 }
 #btn_dragon_green {
-	background-color: green;
+	color: #17714e;
+	text-shadow: 1px 1px 0 #000;
 }
 #btn_dragon_white {
-	background-color: white;
+	color: black;
+	text-shadow:
+	 -1px -1px 0 #FFF,
+	  1px -1px 0 #FFF,
+	 -1px  1px 0 #FFF,
+	  1px  1px 0 #FFF;
+}
+
+.card-logo[style*="solitaire/large_icons/flower.png"]:after {
+	content: "\01F337";
+	font-size: 70px;
+	color: red;
+}
+.card-logo-a[style*="solitaire/small_icons/flower.png"]:after,
+.card-logo-b[style*="solitaire/small_icons/flower.png"]:after {
+	font-weight: bold;
+	content: "\01F337";
+	font-size: 16px;
+	color: red;
+}
+
+.card-logo[style*="solitaire/large_icons/dragon_white.png"]:after {
+	content: "\00767D";
+	font-size: 70px;
+	color: black;
+	text-shadow:
+	 -1px -1px 0 #FFF,
+	  1px -1px 0 #FFF,
+	 -1px  1px 0 #FFF,
+	  1px  1px 0 #FFF;
+}
+.card-logo-a[style*="solitaire/small_icons/dragon_white.png"]:after,
+.card-logo-b[style*="solitaire/small_icons/dragon_white.png"]:after {
+	font-weight: bold;
+	content: "\00767D";
+	font-size: 16px;
+	color: black;
+}
+
+.card-logo[style*="solitaire/large_icons/dragon_red.png"]:after {
+	content: "\004E2D";
+	font-size: 70px;
+	color: #ae2810;
+	text-shadow: 1px 1px 0 #000;
+}
+.card-logo-a[style*="solitaire/small_icons/dragon_red.png"]:after,
+.card-logo-b[style*="solitaire/small_icons/dragon_red.png"]:after {
+	font-weight: bold;
+	content: "\004E2D";
+	font-size: 16px;
+	color: #ae2810;
+}
+
+.card-logo[style*="solitaire/large_icons/dragon_green.png"]:after {
+	content: "\024F35";
+	font-size: 70px;
+	color: #17714e;
+	text-shadow: 1px 1px 0 #000;
+}
+.card-logo-a[style*="solitaire/small_icons/dragon_green.png"]:after,
+.card-logo-b[style*="solitaire/small_icons/dragon_green.png"]:after {
+	font-weight: bold;
+	content: "\024F35";
+	font-size: 16px;
+	color: #17714e;
 }

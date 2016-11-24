@@ -1,0 +1,180 @@
+body {
+	margin: 0;
+	text-align: center;
+	background-color: rgb(11, 82, 55);
+	color: #E8F5E9;
+	cursor: url(assets/cursor_normal.png) 38 38, default;
+}
+
+@media (min-width: 1279px) {
+	body {
+		background-image: url(assets/window.png);
+		background-position: center -8px;
+		background-size: 1502px 889px;
+		background-repeat: no-repeat;
+		background-attachment: local;
+	}
+}
+
+a {
+	color: #B3E5FC;
+}
+
+#board {
+	margin-left: auto;
+	margin-right: auto;
+	background-image: url(solitaire/table_large.png);
+	width: 1279px;
+	height: 805px;
+	position: relative;
+}
+
+#cards {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0px;
+	left: 0px;
+	overflow: hidden;
+}
+
+.card {
+	width: 122px;
+	height: 237px;
+	background-image: url(solitaire/card_front.png);
+	position: absolute;
+	
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+
+	z-index: 1;
+}
+
+.card-reverse {
+	background-image: url(solitaire/card_back.png)
+}
+.card-reverse .card-logo, .card-reverse .card-logo-a, .card-reverse .card-logo-b {
+	display: none;
+}
+
+.slot {
+	width: 122px;
+	height: 237px;
+	position: absolute;
+	/*background-color: #FF00FF;*/
+}
+
+.card-logo {
+	position: absolute;
+	width: 73px;
+	height: 102px;
+	left: 25px;
+	top: 67px;
+}
+
+.card-count-a, .card-count-b {
+	position: absolute;
+	font-family: sans-serif;
+	font-size: 24px;
+	font-weight: bold;
+}
+
+.card-count-a {
+	left: 10px;
+	top: 5px;
+}
+
+.card-count-b {
+	right: 10px;
+	bottom: 5px;
+}
+
+.card-count-b, .card-mini-logo.b {
+	-webkit-transform: rotate(180deg);
+	-moz-transform: rotate(180deg);
+	-ms-transform: rotate(180deg);
+	-o-transform: rotate(180deg);
+	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
+}
+
+.card-mini-logo-a, .card-mini-logo-b {
+	position: absolute;
+	width: 15px;
+	height: 15px;
+}
+
+.card-mini-logo-a {
+	left: 10px;
+	top: 40px;
+}
+
+.card-mini-logo-b {
+	right: 10px;
+	bottom: 40px;
+}
+
+.card-logo-a, .card-logo-b {
+	position: absolute;
+	width: 22px;
+	height: 24px;
+}
+
+.card-logo-a {
+	left: 6px;
+	top: 6px;
+}
+
+.card-logo-b {
+	right: 6px;
+	bottom: 6px;
+}
+
+#btn_dragon_red, #btn_dragon_green, #btn_dragon_white {
+	position: absolute;
+	left: 497px;
+}
+#btn_dragon_red {
+	top: 18px;
+}
+#btn_dragon_green {
+	top: 102px;
+}
+#btn_dragon_white {
+	top: 184px;
+}
+
+/*.ui-draggable-dragging {
+	visibility: hidden;
+}*/
+
+a, button, .btn-dragon {
+	cursor: url(assets/cursor_point.png) 38 38, pointer;
+}
+
+#buttons {
+	position: absolute;
+	top: 808px;
+	right: 0px;
+}
+
+.bottom-button {
+	background-image: url(assets/button_bottom.png);
+	background-color: transparent;
+	border: 0px;
+	color: white;
+	width: 141px;
+	height: 46px;
+	font-size: 20px;
+	font-family: sans-serif;
+}
+.bottom-button:hover {
+	background-image: url(assets/button_bottom_hover.png);
+}
+
+.info-text {
+	margin-right: 20px;
+}

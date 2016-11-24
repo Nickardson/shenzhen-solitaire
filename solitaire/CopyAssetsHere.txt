@@ -1,0 +1,4 @@
+Copy the contents of the "textures\solitaire" folder into this folder.
+
+You can find the folder at:
+steamapps\common\SHENZHEN IO\Content\textures\solitaire

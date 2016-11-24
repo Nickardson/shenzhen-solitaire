@@ -2,7 +2,7 @@
 
 ![Preview image](http://i.imgur.com/pSFk7Jr.jpg)
 
-Yes, this is in the browser!
+Yes, this is in the browser! This is a replication of the addictive solitaire game from SHENZHEN I/O. It can use original graphics from the game for a near-identical experience, but without having to keep the game running. The graphic files are not included, however, and must be copied from your installation of the game.
 
 ## How to install
 1. Download this project from Github as a .zip, and extract.

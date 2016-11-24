@@ -1,6 +1,8 @@
 "use strict";
 
 var DEBUG = false; // if true, allows placing any card in the Flower slot, and dragons are always movable.
+var DEBUG_STYLE = false; // if true, the alternate stylesheet is loaded even if images load correctly.
+
 var CARD_ANIMATION_SPEED = 200;
 
 var SUITS = {
@@ -129,6 +131,7 @@ function createSpecialCard(special) {
 }
 
 var CARD_STACK_GAP = 30;
+
 /**
  * Places a card at the given level
  * @param {Card} card  [description]
@@ -241,13 +244,6 @@ function makeDeck() {
 }
 
 function placeCardsInTray(cards, board, traySet) {
-	/*for (var x = 0; x < 8; x++) {
-		for (var y = 0; y < 5; y++) {
-			var card = cards[x * 5 + y];
-			card.element.appendTo(board);
-			insertCard(card, traySet[x], y);
-		}
-	}*/
 	var row = 0;
 	var col = 0;
 	for (var i = 0; i < cards.length; i++) {
@@ -520,8 +516,6 @@ function tweenCard(card, slot, depth, callback) {
 function dragonBtnListener(b) {
 	return function () {
 		if ($(this).data('active') === true) {
-			console.log("move da dragons");
-
 			var list = getSpecialCards(b.type);
 			
 			var openSlot;
@@ -623,7 +617,7 @@ function canPlaceStack(stack, destSlot, dest) {
 	}
 }
 
-function startNewGame() {
+function startNewGame(cards, board) {
 	// TODO: start cards face down in the flower slot, then move them into place.
 	
 	shuffleArray(cards); // shuffle cards
@@ -634,31 +628,6 @@ function startNewGame() {
 
 var looper;
 function victoryScreen() {
-	/*var cards = $('.card');
-	cards.sort(function (a, b) {
-		var oa = $(a).offset(),
-			ob = $(b).offset();
-		var cmp = oa.left - ob.left;
-		if (cmp === 0) {
-			cmp = $(b).index() - $(a).index();
-		}
-		return cmp;
-	});
-
-	var i = 0;
-
-	// each iteration, over time, take the first card and shunt it down.
-	var looper = setInterval(function () {
-		$(cards[i]).animate({
-			top: parseInt($(cards[i]).css('top')) + 1000
-		}, 1000);
-
-		i++;
-		if (i >= cards.length) {
-			clearInterval(looper);
-		}
-	}, 100);*/
-
 	var cards = [];
 
 	var stax = $('.slot-spare,.slot-flower,.slot-out');
@@ -696,10 +665,19 @@ function victoryScreen() {
 	}, 50);
 }
 
+$(document).ready(function () {
+
+var board = $('#cards');
+populateSlots(SLOTS, board);
+
+var cards = makeDeck();
+
+startNewGame(cards, board);
+
 $('#newGame').click(function() {
 	clearInterval(looper);
 	looper = undefined;
-	startNewGame();
+	startNewGame(cards, board);
 });
 
 $('#winGame').click(function() {
@@ -738,22 +716,6 @@ $('#solveGame').click(function() {
 	balanceCards();
 	onFieldUpdated();
 });
-
-function fakeDeck() {
-	var cards = [];
-	for (var i = 1; i <= 4; i++) {cards.push(createCard(i, SUITS.BAMBOO));}
-	for (var i = 1; i <= 4; i++) {cards.push(createCard(i, SUITS.COINS));}
-	for (var i = 1; i <= 4; i++) {cards.push(createCard(i, SUITS.CHARACTERS));}
-	return cards;
-}
-
-var board = $('#cards');
-populateSlots(SLOTS, board);
-
-var cards = makeDeck();
-// var cards = fakeDeck();
-
-startNewGame();
 
 /**
  * Creates a stack of all 
@@ -875,4 +837,26 @@ $(".card").draggable({
 	}
 });
 
+function loadAltStyle() {
+	$('head').append('<link rel="stylesheet" type="text/css" href="noimages.css">');
+}
+
+var triggeredWarning = false;
+console.log('why');
+$('#btn_dragon_red').on('error', function (data, handler) {
+	if (!triggeredWarning) {
+		console.log(arguments);
+		alert('Could not load an image! Did you copy the "textures/solitaire" folder into the "solitaire" folder of the webpage?');
+		
+		loadAltStyle();
+	}
+	triggeredWarning = true;
+});
+
 $('html').keydown(function(){}); // for debugging in Chrome
+
+if (DEBUG_STYLE) {
+	loadAltStyle();
+}
+
+});

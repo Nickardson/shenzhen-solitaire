@@ -133,9 +133,11 @@ a {
 	bottom: 6px;
 }
 
-#btn_dragon_red, #btn_dragon_green, #btn_dragon_white {
+.btn-dragon {
 	position: absolute;
 	left: 497px;
+	width: 72px;
+	height: 71px;
 }
 #btn_dragon_red {
 	top: 18px;

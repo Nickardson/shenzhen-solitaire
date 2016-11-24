@@ -1,0 +1,27 @@
+.card {
+	background-color: lightgray;
+	border: 1px solid darkgray;
+	border-top: 2px solid white;
+	border-radius: 5px;
+}
+
+.slot {
+	background-color: #333333;
+}
+
+.btn-dragon {
+	border-radius: 50%;
+	box-sizing: border-box;
+	border: 20px solid #B0A46A;
+	color: transparent;
+}
+
+#btn_dragon_red {
+	background-color: red;
+}
+#btn_dragon_green {
+	background-color: green;
+}
+#btn_dragon_white {
+	background-color: white;
+}

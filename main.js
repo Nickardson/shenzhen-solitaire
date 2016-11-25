@@ -916,5 +916,3 @@ if (DEBUG_STYLE) {
 }
 
 });
-
-// TODO: finalize all noimages css.

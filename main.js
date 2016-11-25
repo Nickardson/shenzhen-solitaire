@@ -103,6 +103,20 @@ var SLOTS = {
 	]
 };
 
+jQuery.fn.visible = function() {
+    return this.css('visibility', 'visible');
+};
+
+jQuery.fn.invisible = function() {
+    return this.css('visibility', 'hidden');
+};
+
+jQuery.fn.visibilityToggle = function() {
+    return this.css('visibility', function(i, visibility) {
+        return (visibility == 'visible') ? 'hidden' : 'visible';
+    });
+};
+
 /**
  * Creates a card of the given value and suit.
  * @param  {Integer} value
@@ -803,20 +817,6 @@ function getStackFromCardElement(cardElement) {
 }
 
 // Make the cards interactable
-jQuery.fn.visible = function() {
-    return this.css('visibility', 'visible');
-};
-
-jQuery.fn.invisible = function() {
-    return this.css('visibility', 'hidden');
-};
-
-jQuery.fn.visibilityToggle = function() {
-    return this.css('visibility', function(i, visibility) {
-        return (visibility == 'visible') ? 'hidden' : 'visible';
-    });
-};
-
 $(".slot").droppable({
 	drop: function(event, ui) {
 		var stack = getStackFromCardElement(ui.draggable);

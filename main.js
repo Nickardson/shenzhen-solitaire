@@ -593,7 +593,11 @@ function dragonBtnListener(b) {
 			for (var i = 0; i < SLOTS.SPARE.length; i++) {
 				var set = SLOTS.SPARE[i].cards;
 				// TODO: if any spare slot already has this dragon, go to that one instead.
-				if (set.length === 0 || set[0].special == b.type) {
+				if (set.length >= DRAGON_COUNT && set[0].special == b.type) {
+					return false;
+				}
+
+				if (set.length === 0 || set[0].special == b.type && set.length < DRAGON_COUNT) {
 					openSlot = SLOTS.SPARE[i];
 					break;
 				}

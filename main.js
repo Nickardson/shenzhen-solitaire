@@ -686,6 +686,7 @@ function startNewGame(cards, board) {
 	$('.card').finish().removeClass('card-reverse');
 	$('.btn-dragon').data('complete', false);
 	placeCardsInTray(cards, board, SLOTS.TRAY); // place cards
+	$('.card').visible();
 }
 
 var looper;

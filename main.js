@@ -677,7 +677,7 @@ function canPlaceStack(stack, destSlot, dest) {
 	} else if (destSlot.type == "flower") {
 		return stack[0].special === SPECIAL.FLOWER || DEBUG === true;
 	} else if (destSlot.type == "spare") {
-		return destSlot.cards.length === 0;
+		return destSlot.cards.length === 0 && stack.length == 1;
 	} else if (destSlot.type == "out") {
 		// a single numbered card
 		if (stack.length === 1 && stack[0].value) {

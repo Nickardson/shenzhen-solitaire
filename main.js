@@ -1,5 +1,7 @@
 "use strict";
 
+var useLocalStorage = (typeof localStorage !== 'undefined');
+
 /**
  * if true, allows placing any card in the Flower slot, and dragons are always movable.
  * @type {Boolean}
@@ -526,7 +528,7 @@ function onFieldUpdated() {
 			setTimeout(function() {
 				onFieldUpdated();
 			}, CARD_ANIMATION_SPEED);
-			break; // only move one?
+			return; // only move one?
 		}
 	}
 
@@ -707,11 +709,20 @@ function startNewGame(cards, board) {
 	$('.card').visible();
 }
 
+function updateWinCount() {
+	if (useLocalStorage) {
+		$('#win_count').text(localStorage.shenzhen_win_count);
+	}
+}
+
 var looper;
 /**
  * Runs the victory screen, where cards drop down the screen.
  */
 function victoryScreen() {
+	localStorage.shenzhen_win_count++;
+	updateWinCount();
+
 	var cards = [];
 
 	var stax = $('.slot-spare,.slot-flower,.slot-out');
@@ -750,6 +761,13 @@ function victoryScreen() {
 }
 
 $(document).ready(function () {
+
+if (useLocalStorage) {
+	if (localStorage.shenzhen_win_count === undefined) {
+		localStorage.shenzhen_win_count = 0;
+	}
+}
+updateWinCount();
 
 var board = $('#cards');
 populateSlots(SLOTS, board);

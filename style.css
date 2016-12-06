@@ -57,6 +57,9 @@ a {
 .card-reverse {
 	background-image: url(solitaire/card_back.png)
 }
+.card-reverse.grand_dragon {
+	background-image: url(assets/card_back_upgrade.png)
+}
 .card-reverse .card-logo, .card-reverse .card-logo-a, .card-reverse .card-logo-b {
 	display: none;
 }

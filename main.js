@@ -609,6 +609,11 @@ function dragonBtnListener(b) {
 				for (var i = 0; i < list.length; i++) {
 					tweenCard(list[i], openSlot, openSlot.cards.length, function (card, slot, depth) {
 						card.element.addClass("card-reverse");
+
+						// special backing
+						if (useLocalStorage && localStorage.shenzhen_win_count >= 100) {
+							card.element.addClass("grand_dragon");
+						}
 					});
 				}
 				$(b.selector).attr('src', b.imgComplete).data('complete', true);

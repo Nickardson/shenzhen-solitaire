@@ -550,6 +550,11 @@ function onFieldUpdated() {
 
 	if (allGood) {
 		// wait for any possible animations to finish.
+		if (!isInVictory) {
+			localStorage.shenzhen_win_count++;
+			updateWinCount();
+		}
+		isInVictory = true;
 		setTimeout(function () {
 			victoryScreen();
 		}, CARD_ANIMATION_SPEED);
@@ -788,13 +793,6 @@ var looper;
  * Runs the victory screen, where cards drop down the screen.
  */
 function victoryScreen() {
-	if (!isInVictory) {
-		localStorage.shenzhen_win_count++;
-		updateWinCount();
-	}
-	isInVictory = true;
-
-
 	var cards = [];
 
 	var stax = $('.slot-spare,.slot-flower,.slot-out');

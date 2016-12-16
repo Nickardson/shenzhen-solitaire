@@ -279,10 +279,10 @@ function populateSlots(slots, board) {
  */
 function makeDeck() {
 	var cards = [];
-
+	var s; // 0-2 suit index.
+	var suit; // the actual suit object
 	for (var value = 1; value <= 9; value++) {
-		for (var s = 0; s < 3; s++) {
-			var suit;
+		for (s = 0; s < 3; s++) {
 			switch (s) {
 				case 0: suit = SUITS.BAMBOO; break;
 				case 1: suit = SUITS.CHARACTERS; break;
@@ -292,9 +292,8 @@ function makeDeck() {
 		}
 	}
 
-	for (var s = 0; s < 3; s++) {
+	for (s = 0; s < 3; s++) {
 		for (var i = 0; i < DRAGON_COUNT; i++) {
-			var suit;
 			switch (s) {
 				case 0: suit = SPECIAL.DRAGON_GREEN; break;
 				case 1: suit = SPECIAL.DRAGON_WHITE; break;
@@ -462,8 +461,9 @@ var DRAGON_BTNS = [
  * To be called when cards are done moving. Handles setting up the UI for dragons, etc.
  */
 function onFieldUpdated() {
+	var i;
 	// are dragons available?
-	for (var i = 0; i < DRAGON_BTNS.length; i++) {
+	for (i = 0; i < DRAGON_BTNS.length; i++) {
 		var btn = DRAGON_BTNS[i];
 		if ($(btn.selector).data('complete') !== true) {
 			if (isDragonReady(btn.type)) {
@@ -479,31 +479,33 @@ function onFieldUpdated() {
 	// this means that, for a BAMBOO 5, there must be no 4s anywhere in the tray or spare slots.
 	
 	// a list of numbered cards on the top of movable slots.
+	var cards;
+	var card;
 	var movableTops = [];
-	for (var i = 0; i < SLOTS.TRAY.length; i++) {
-		var cards = SLOTS.TRAY[i].cards;
+	for (i = 0; i < SLOTS.TRAY.length; i++) {
+		cards = SLOTS.TRAY[i].cards;
 		if (cards.length > 0) {
-			var card = cards[cards.length - 1];
+			card = cards[cards.length - 1];
 			if (card.value || card.special === SPECIAL.FLOWER) {
 				movableTops.push(card);
 			}
 		}
 	}
-	for (var i = 0; i < SLOTS.SPARE.length; i++) {
-		var cards = SLOTS.SPARE[i].cards;
+	for (i = 0; i < SLOTS.SPARE.length; i++) {
+		cards = SLOTS.SPARE[i].cards;
 		if (cards.length > 0) {
-			var card = cards[cards.length - 1];
+			card = cards[cards.length - 1];
 			if (card.value || card.special === SPECIAL.FLOWER) {
 				movableTops.push(card);
 			}
 		}
 	}
 
-	for (var i = 0; i < movableTops.length; i++) {
+	for (i = 0; i < movableTops.length; i++) {
 		var canOut = true;
 		var outSlot = undefined;
 
-		var card = movableTops[i];
+		card = movableTops[i];
 		if (card.special == SPECIAL.FLOWER) {
 			outSlot = SLOTS.FLOWER[0];
 		} else if (card.value > 1) {
@@ -532,16 +534,14 @@ function onFieldUpdated() {
 
 		if (canOut && outSlot) {
 			tweenCard(card, outSlot, outSlot.cards.length);
-			setTimeout(function() {
-				onFieldUpdated();
-			}, CARD_ANIMATION_SPEED);
+			setTimeout(onFieldUpdated, CARD_ANIMATION_SPEED);
 			return; // only move one?
 		}
 	}
 
 	// is the field clear?
 	var allGood = true;
-	for (var i = 0; i < SLOTS.TRAY.length; i++) {
+	for (i = 0; i < SLOTS.TRAY.length; i++) {
 		if (SLOTS.TRAY[i].cards.length !== 0) {
 			allGood = false;
 			break;
@@ -598,13 +598,35 @@ function tweenCard(card, slot, depth, callback) {
 	});
 }
 
+/**
+ * Intended as a parameter for tweenCard.
+ * Applies a backing to the card. Also adds special "dragon" backings if the win count is right.
+ * @param  {Card} card  The card
+ * @param  {SLOT} slot  ignored
+ * @param  {Integer} depth ignored
+ */
+function applyCardBacking(card, slot, depth) {
+	card.element.addClass("card-reverse");
+
+	// special backing
+	if (useLocalStorage) {
+		if (localStorage.shenzhen_win_count >= 100) {
+			card.element.addClass("grand_dragon");
+		}
+		if (localStorage.shenzhen_win_count >= 200) {
+			card.element.addClass("grand_dragon_2");
+		}
+	}
+}
+
 function dragonBtnListener(b) {
 	return function () {
 		if ($(this).data('active') === true) {
+			var i;
 			var list = getSpecialCards(b.type);
 			
 			var openSlot;
-			for (var i = 0; i < SLOTS.SPARE.length; i++) {
+			for (i = 0; i < SLOTS.SPARE.length; i++) {
 				var set = SLOTS.SPARE[i].cards;
 				// TODO: if any spare slot already has this dragon, go to that one instead.
 				if (set.length >= DRAGON_COUNT && set[0].special == b.type) {
@@ -618,20 +640,8 @@ function dragonBtnListener(b) {
 			}
 
 			if (list.length > 0 && openSlot !== undefined) {
-				for (var i = 0; i < list.length; i++) {
-					tweenCard(list[i], openSlot, openSlot.cards.length, function (card, slot, depth) {
-						card.element.addClass("card-reverse");
-
-						// special backing
-						if (useLocalStorage) {
-							if (localStorage.shenzhen_win_count >= 100) {
-								card.element.addClass("grand_dragon");
-							}
-							if (localStorage.shenzhen_win_count >= 200) {
-								card.element.addClass("grand_dragon_2");
-							}
-						}
-					});
+				for (i = 0; i < list.length; i++) {
+					tweenCard(list[i], openSlot, openSlot.cards.length, applyCardBacking);
 				}
 				$(b.selector).attr('src', b.imgComplete).data('complete', true);
 				balanceCards();
@@ -759,7 +769,7 @@ function startNewGame(cards, board, seed) {
 	
 	var truSeed = seed;
 	// use time-based seed if there is no seed, or is an empty string.
-	if (seed === undefined || (typeof seed === "string" && seed.length == 0)) {
+	if (seed === undefined || (typeof seed === "string" && seed.length === 0)) {
 		truSeed = new Date().getTime();
 	}
 	// if input is a numeric string, convert to an integer ("123" and 123 behave differently)
@@ -811,19 +821,19 @@ function victoryScreen() {
 	} while (foundThisRun);
 	stax.removeData('search-i');
 
-	var i = 0;
+	var row = 0;
 
 	// each iteration, over time, take the first card and shunt it down.
 	if (looper !== undefined) {
 		clearInterval(looper);
 	}
 	looper = setInterval(function () {
-		$(cards[i]).animate({
-			top: parseInt($(cards[i]).css('top')) + 1000
+		$(cards[row]).animate({
+			top: parseInt($(cards[row]).css('top')) + 1000
 		}, 1000);
 
-		i++;
-		if (i >= cards.length) {
+		row++;
+		if (row >= cards.length) {
 			clearInterval(looper);
 			looper = undefined;
 			isInVictory = false;
@@ -870,17 +880,17 @@ $('#solveGame').click(function() {
 	clearInterval(looper);
 	looper = undefined;
 
-
+	var i;
 	var list = getSpecialCards(SPECIAL.DRAGON_GREEN);
-	for (var i = 0; i < list.length; i++) {
+	for (i = 0; i < list.length; i++) {
 		tweenCard(list[i], SLOTS.SPARE[0], i);
 	}
 	list = getSpecialCards(SPECIAL.DRAGON_RED);
-	for (var i = 0; i < list.length; i++) {
+	for (i = 0; i < list.length; i++) {
 		tweenCard(list[i], SLOTS.SPARE[1], i);
 	}
 	list = getSpecialCards(SPECIAL.DRAGON_WHITE);
-	for (var i = 0; i < list.length; i++) {
+	for (i = 0; i < list.length; i++) {
 		tweenCard(list[i], SLOTS.SPARE[2], i);
 	}
 
@@ -969,12 +979,13 @@ $(".card").draggable({
         var stack = [];
     	var cardIndex = card.slot.cards.indexOf(card),
 			cardLength = card.slot.cards.length;
-		for (var i = cardIndex; i < cardLength; i++) {
+		var i;
+		for (i = cardIndex; i < cardLength; i++) {
 			stack.push(card.slot.cards[i]);
 		}
         
         if (!card.element.is(':animated') && canPickUpStack(stack, card.slot)) {
-        	for (var i = 0; i < stack.length; i++) {
+        	for (i = 0; i < stack.length; i++) {
         		stack[i].element.invisible();
         	}
         } else {

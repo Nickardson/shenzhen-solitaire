@@ -1,4 +1,10 @@
 {
 	"jquery": true,
-	"unused": "vars"
+	"unused": "vars",
+	"browser": true,
+	"globals": [
+		"console",
+		"prompt",
+		"alert"
+	]
 }

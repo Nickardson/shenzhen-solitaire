@@ -28,16 +28,19 @@ var CARD_STACK_GAP = 30;
 
 var SUITS = {
 	BAMBOO: {
+		order: 1,
 		color: '#17714e',
 		prefix_large: "bamboo",
 		small: "bamboo"
 	},
 	CHARACTERS: {
+		order: 2,
 		color: '#000000',
 		prefix_large: "char",
 		small: "characters"
 	},
 	COINS: {
+		order: 3,
 		color: '#ae2810',
 		prefix_large: "coins",
 		small: "coins"
@@ -46,18 +49,22 @@ var SUITS = {
 
 var SPECIAL = {
 	DRAGON_GREEN: {
+		order: 1,
 		large: "dragon_green",
 		small: "dragon_green",
 	},
 	DRAGON_RED: {
+		order: 2,
 		large: "dragon_red",
 		small: "dragon_red",
 	},
 	DRAGON_WHITE: {
+		order: 3,
 		large: "dragon_white",
 		small: "dragon_white",
 	},
 	FLOWER: {
+		order: 4,
 		large: "flower",
 		small: "flower",
 	}
@@ -705,14 +712,60 @@ function canPlaceStack(stack, destSlot, dest) {
 }
 
 /**
+ * Sorts the cards in a consistent order.
+ * Modifies the given array.
+ * @param  {Array[Card]} cards The array of cards to be sorted.
+ */
+function sortCards(cards) {
+	cards.sort(function (a, b) {
+		var aHas = typeof a.value !== "undefined";
+		var bHas = typeof b.value !== "undefined";
+		if (aHas && bHas) {
+			if (a.value == b.value) {
+				return a.suit.order - b.suit.order;
+			} else {
+				return a.value - b.value;
+			}
+		} else {
+			if (aHas) {
+				return -1;
+			} else if (bHas) {
+				return 1;
+			} else {
+				return a.special.order - b.special.order;
+			}
+		}
+	});
+}
+
+/**
  * Sets up a new game with randomly placed cards.
  * @param  {Array[Card]} cards List of cards which will be placed.
  * @param  {HTMLElement} board The container for the cards.
+ * @param  {Object} seed (optional) The random seed for shuffling the deck. If omitted, the time is used.
  */
-function startNewGame(cards, board) {
+function startNewGame(cards, board, seed) {
+	clearInterval(looper);
+	looper = undefined;
+	
 	// TODO: start cards face down in the flower slot, then move them into place.
 	
+	sortCards(cards);
+	
+	var truSeed = seed;
+	// use time-based seed if there is no seed, or is an empty string.
+	if (seed === undefined || (typeof seed === "string" && seed.length == 0)) {
+		truSeed = new Date().getTime();
+	}
+	// if input is a numeric string, convert to an integer ("123" and 123 behave differently)
+	if (!isNaN(parseInt(truSeed, 10))) {
+		truSeed = parseInt(truSeed, 10);
+	}
+	Math.seedrandom(truSeed);
+	console.log('Game id:', truSeed);
+
 	shuffleArray(cards); // shuffle cards
+	
 	$('.card').finish().removeClass('card-reverse');
 	$('.btn-dragon').data('complete', false);
 	placeCardsInTray(cards, board, SLOTS.TRAY); // place cards
@@ -794,12 +847,21 @@ populateSlots(SLOTS, board);
 
 var cards = makeDeck();
 
-startNewGame(cards, board);
+// if there is a hash in the url upon load, load that as the seed.
+startNewGame(cards, board, location.hash.replace('#', ''));
 
 $('#newGame').click(function() {
-	clearInterval(looper);
-	looper = undefined;
+	// clear the hash from the url.
+	history.pushState("", document.title, window.location.pathname + window.location.search);
+
 	startNewGame(cards, board);
+});
+
+$('#seedGame').click(function() {
+	// prompt the user for a hash.
+	var seed = prompt("Enter the random seed for this game.");
+	location.hash = seed;
+	startNewGame(cards, board, seed);
 });
 
 $('#winGame').click(function() {

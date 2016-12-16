@@ -611,8 +611,13 @@ function dragonBtnListener(b) {
 						card.element.addClass("card-reverse");
 
 						// special backing
-						if (useLocalStorage && localStorage.shenzhen_win_count >= 100) {
-							card.element.addClass("grand_dragon");
+						if (useLocalStorage) {
+							if (localStorage.shenzhen_win_count >= 100) {
+								card.element.addClass("grand_dragon");
+							}
+							if (localStorage.shenzhen_win_count >= 200) {
+								card.element.addClass("grand_dragon_2");
+							}
 						}
 					});
 				}

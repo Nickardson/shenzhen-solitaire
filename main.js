@@ -725,13 +725,22 @@ function updateWinCount() {
 	}
 }
 
+/**
+ * Whether the victory screen is currently running.
+ * @type {Boolean}
+ */
+var isInVictory = false;
 var looper;
 /**
  * Runs the victory screen, where cards drop down the screen.
  */
 function victoryScreen() {
-	localStorage.shenzhen_win_count++;
-	updateWinCount();
+	if (!isInVictory) {
+		localStorage.shenzhen_win_count++;
+		updateWinCount();
+	}
+	isInVictory = true;
+
 
 	var cards = [];
 
@@ -766,6 +775,7 @@ function victoryScreen() {
 		if (i >= cards.length) {
 			clearInterval(looper);
 			looper = undefined;
+			isInVictory = false;
 		}
 	}, 50);
 }

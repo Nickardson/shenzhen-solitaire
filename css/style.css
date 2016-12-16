@@ -3,12 +3,12 @@ body {
 	text-align: center;
 	background-color: rgb(11, 82, 55);
 	color: #E8F5E9;
-	cursor: url(assets/cursor_normal.png) 38 38, default;
+	cursor: url(../assets/cursor_normal.png) 38 38, default;
 }
 
 @media (min-width: 1279px) {
 	body {
-		background-image: url(assets/window.png);
+		background-image: url(../assets/window.png);
 		background-position: center -8px;
 		background-size: 1502px 889px;
 		background-repeat: no-repeat;
@@ -23,7 +23,7 @@ a {
 #board {
 	margin-left: auto;
 	margin-right: auto;
-	background-image: url(solitaire/table_large.png);
+	background-image: url(../solitaire/table_large.png);
 	width: 1279px;
 	height: 805px;
 	position: relative;
@@ -41,7 +41,7 @@ a {
 .card {
 	width: 122px;
 	height: 237px;
-	background-image: url(solitaire/card_front.png);
+	background-image: url(../solitaire/card_front.png);
 	position: absolute;
 	
 	-webkit-touch-callout: none;
@@ -55,13 +55,13 @@ a {
 }
 
 .card-reverse {
-	background-image: url(solitaire/card_back.png)
+	background-image: url(../solitaire/card_back.png)
 }
 .card-reverse.grand_dragon {
-	background-image: url(assets/card_back_upgrade.png)
+	background-image: url(../assets/card_back_upgrade.png)
 }
 .card-reverse.grand_dragon.grand_dragon_2 {
-	background-image: url(assets/card_back_upgrade_200.png)
+	background-image: url(../assets/card_back_upgrade_200.png)
 }
 .card-reverse .card-logo, .card-reverse .card-logo-a, .card-reverse .card-logo-b {
 	display: none;
@@ -160,7 +160,7 @@ a {
 }*/
 
 a, button, .btn-dragon {
-	cursor: url(assets/cursor_point.png) 38 38, pointer;
+	cursor: url(../assets/cursor_point.png) 38 38, pointer;
 }
 
 #buttons {
@@ -174,7 +174,7 @@ a, button, .btn-dragon {
 }
 
 .bottom-button {
-	background-image: url(assets/button_bottom.png);
+	background-image: url(../assets/button_bottom.png);
 	background-color: transparent;
 	border: 0px;
 	color: white;
@@ -186,7 +186,7 @@ a, button, .btn-dragon {
 }
 
 .bottom-button:hover {
-	background-image: url(assets/button_bottom_hover.png);
+	background-image: url(../assets/button_bottom_hover.png);
 }
 
 .info-text {

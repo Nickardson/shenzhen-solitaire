@@ -1009,7 +1009,7 @@ $(".card").draggable({
  * Loads the alternate stylesheet for when the images are missing.
  */
 function loadAltStyle() {
-	$('head').append('<link rel="stylesheet" type="text/css" href="noimages.css">');
+	$('head').append('<link rel="stylesheet" type="text/css" href="css/noimages.css">');
 }
 
 var triggeredWarning = false;

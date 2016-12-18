@@ -539,7 +539,7 @@ function onFieldUpdated() {
 			tweenCard(card, outSlot, outSlot.cards.length);
 			setTimeout(onFieldUpdated, CARD_ANIMATION_SPEED);
 			// don't move any more top cards in this iteration, next will be moved after this card finishes.
-			return;
+			break;
 		}
 	}
 

@@ -130,7 +130,7 @@ jQuery.fn.visibilityToggle = function() {
  * Creates a card of the given value and suit.
  * @param  {Integer} value
  * @param  {SUIT} suit 
- * @return {Card}
+ * @return {Card} {element: HTMLElement, value: Integer, suit: SUIT}
  */
 function createCard(value, suit) {
 	var smallImg = 'solitaire/small_icons/' + suit.small + '.png';
@@ -164,7 +164,7 @@ function createCard(value, suit) {
 }
 
 /**
- * Creates a card of the given type.
+ * Creates a 'special' card of the given type.
  * @param  {SPECIAL} special Card type definitition from the SPECIAL table.
  * @return {Card}
  */
@@ -308,7 +308,7 @@ function makeDeck() {
 }
 
 /**
- * Places the given cards on the given board
+ * Places the given cards onto the given board in a top-to-bottom, left-to-right fashion.
  * @param  {Array[Card]} cards   List of cards to place
  * @param  {HTMLElement} board   Parent element for the cards.
  * @param  {SLOT} traySet An array of individual slots, (ex: SLOTS.TRAY)
@@ -331,7 +331,7 @@ function placeCardsInTray(cards, board, traySet) {
 }
 
 /**
- * Makes sure there are no gaps between cards in the tray, by moving them towards the top to fill the gap.
+ * Makes sure there are no vertical gaps between cards in the tray, by moving them towards the top to fill the gap.
  */
 function balanceCards() {
 	for (var i = 0; i < SLOTS.TRAY.length; i++) {
@@ -414,7 +414,7 @@ function getCard(value, suit) {
 /**
  * Gets whether the dragons of the given type are all on the top of their respective stack, and a slot is open for them to go to.
  * @param  {SPECIAL}  type 
- * @return {Boolean}      Whether the number of top cards is equal to the DRAGON_COUNT.
+ * @return {Boolean}  Whether all dragon cards of that type are able to be moved, and there is an open slot.
  */
 function isDragonReady(type) {
 	if (!DEBUG) {
@@ -462,7 +462,7 @@ var DRAGON_BTNS = [
  */
 function onFieldUpdated() {
 	var i;
-	// are dragons available?
+	// prepare buttons if dragons are available
 	for (i = 0; i < DRAGON_BTNS.length; i++) {
 		var btn = DRAGON_BTNS[i];
 		if ($(btn.selector).data('complete') !== true) {
@@ -478,10 +478,10 @@ function onFieldUpdated() {
 	// it is movable when there are no cards that can be placed on that card, and the destination is 1 less than this card.
 	// this means that, for a BAMBOO 5, there must be no 4s anywhere in the tray or spare slots.
 	
-	// a list of numbered cards on the top of movable slots.
+	// build a list of cards which are on the top of their stacks, and are potentially eligible to be automatically moved.
+	var movableTops = [];
 	var cards;
 	var card;
-	var movableTops = [];
 	for (i = 0; i < SLOTS.TRAY.length; i++) {
 		cards = SLOTS.TRAY[i].cards;
 		if (cards.length > 0) {
@@ -507,8 +507,10 @@ function onFieldUpdated() {
 
 		card = movableTops[i];
 		if (card.special == SPECIAL.FLOWER) {
+			// flower can always move to flower slot.
 			outSlot = SLOTS.FLOWER[0];
 		} else if (card.value > 1) {
+			// output only if all cards with -1 value are in the out tray.
 			for (var suit in SUITS) {
 				var cardAbove = getCard(card.value - 1, SUITS[suit]);
 				if (cardAbove) {
@@ -516,6 +518,7 @@ function onFieldUpdated() {
 						canOut = false;
 						break;
 					} else {
+						// card-1 is in the out slot, save that location.
 						if (cardAbove.suit == card.suit) {
 							outSlot = cardAbove.slot;
 						}
@@ -523,7 +526,7 @@ function onFieldUpdated() {
 				}
 			}
 		} else {
-			// first empty slot
+			// output this '1' valued card to the first empty 'out' slot
 			for (var j = 0; j < SLOTS.OUT.length; j++) {
 				if (SLOTS.OUT[j].cards.length === 0) {
 					outSlot = SLOTS.OUT[j];
@@ -535,11 +538,12 @@ function onFieldUpdated() {
 		if (canOut && outSlot) {
 			tweenCard(card, outSlot, outSlot.cards.length);
 			setTimeout(onFieldUpdated, CARD_ANIMATION_SPEED);
-			return; // only move one?
+			// don't move any more top cards in this iteration, next will be moved after this card finishes.
+			return;
 		}
 	}
 
-	// is the field clear?
+	// no more top cards to move, is the field clear?
 	var allGood = true;
 	for (i = 0; i < SLOTS.TRAY.length; i++) {
 		if (SLOTS.TRAY[i].cards.length !== 0) {
@@ -549,12 +553,12 @@ function onFieldUpdated() {
 	}
 
 	if (allGood) {
-		// wait for any possible animations to finish.
 		if (!isInVictory) {
 			localStorage.shenzhen_win_count++;
 			updateWinCount();
 		}
 		isInVictory = true;
+		// wait for any possible animations to finish.
 		setTimeout(function () {
 			victoryScreen();
 		}, CARD_ANIMATION_SPEED);
@@ -569,14 +573,14 @@ function onFieldUpdated() {
  * @param  {Function} callback Called when the animation is complete with the arguments (card, slot, depth)
  */
 function tweenCard(card, slot, depth, callback) {
+	// remember the original position, move the card to determine the final position, then reset to original and interpolate between them.
+	
 	var oldOffset = card.element.offset();
 	insertCard(card, slot, depth);
 	var newOffset = card.element.offset();
 
 	var dY = newOffset.top - oldOffset.top, 
 		dX = newOffset.left - oldOffset.left;
-	/*var finalY = card.element.position().top,
-		finalX = card.element.position().left;*/
 	var finalY = parseInt(card.element.css('top')),
 		finalX = parseInt(card.element.css('left'));
 
@@ -619,6 +623,11 @@ function applyCardBacking(card, slot, depth) {
 	}
 }
 
+/**
+ * Creates an jQuery action function for a button from DRAGON_BTNS
+ * @param  {DRAGON_BTNS element} b The button description
+ * @return {Function}
+ */
 function dragonBtnListener(b) {
 	return function () {
 		if ($(this).data('active') === true) {
@@ -650,6 +659,7 @@ function dragonBtnListener(b) {
 		}
 	};
 }
+
 for (var i = 0; i < DRAGON_BTNS.length; i++) {
 	var btn = DRAGON_BTNS[i];
 	$(btn.selector).click(dragonBtnListener(btn));
@@ -662,7 +672,7 @@ for (var i = 0; i < DRAGON_BTNS.length; i++) {
  * OR From the bottom-most card up, each is a numbered card, decreases by in value by 1, and is not the same color as the previous.
  * @param  {Array[Card]} stack A list of cards, with the first element being the "bottom-most" card.
  * @param  {SLOT} sourceSlot The type of slot this comes from
- * @return {[Boolean]}  Whether the stack can be picked up
+ * @return {Boolean}  Whether the stack can be picked up
  */
 function canPickUpStack(stack, sourceSlot) {
 	if (sourceSlot.type == "tray") {
@@ -709,14 +719,16 @@ function canPlaceStack(stack, destSlot, dest) {
 			}
 		}
 	} else if (destSlot.type == "flower") {
+		// only flower allowed in flower slot, except during debug
 		return stack[0].special === SPECIAL.FLOWER || DEBUG === true;
 	} else if (destSlot.type == "spare") {
+		// only 1 card manually placed in spare slot
 		return destSlot.cards.length === 0 && stack.length == 1;
 	} else if (destSlot.type == "out") {
 		// a single numbered card
 		if (stack.length === 1 && stack[0].value) {
 			if (dest === undefined) {
-				// if empty, must be the first card.
+				// if empty, must be value '1' card.
 				return stack[0].value == 1;
 			} else {
 				// otherwise, must be the next value
@@ -798,7 +810,7 @@ function updateWinCount() {
  * @type {Boolean}
  */
 var isInVictory = false;
-var looper;
+var looper; // the interval identifier for the cards dropping in the victory screen.
 /**
  * Runs the victory screen, where cards drop down the screen.
  */
@@ -866,51 +878,14 @@ $('#newGame').click(function() {
 });
 
 $('#seedGame').click(function() {
-	// prompt the user for a hash.
+	// prompt the user for a seed.
 	var seed = prompt("Enter the random seed for this game.");
 	location.hash = seed;
 	startNewGame(cards, board, seed);
 });
 
-$('#winGame').click(function() {
-	victoryScreen();
-});
-
-$('#solveGame').click(function() {
-	clearInterval(looper);
-	looper = undefined;
-
-	var i;
-	var list = getSpecialCards(SPECIAL.DRAGON_GREEN);
-	for (i = 0; i < list.length; i++) {
-		tweenCard(list[i], SLOTS.SPARE[0], i);
-	}
-	list = getSpecialCards(SPECIAL.DRAGON_RED);
-	for (i = 0; i < list.length; i++) {
-		tweenCard(list[i], SLOTS.SPARE[1], i);
-	}
-	list = getSpecialCards(SPECIAL.DRAGON_WHITE);
-	for (i = 0; i < list.length; i++) {
-		tweenCard(list[i], SLOTS.SPARE[2], i);
-	}
-
-	tweenCard(getSpecialCards(SPECIAL.FLOWER)[0], SLOTS.FLOWER[0], 0);
-
-	var suitIndex = 0;
-	for (var suit in SUITS) {
-		for (var n = 1; n < 9; n++) {
-			var card = getCard(n, SUITS[suit]);
-			tweenCard(card, SLOTS.OUT[suitIndex], n-1);
-		}
-		suitIndex++;
-	}
-
-	balanceCards();
-	onFieldUpdated();
-});
-
 /**
- * Creates a stack of all cards including and on top of the given card.
+ * Creates a stack of all cards including and stacked on top of the given card.
  * @param  {HTMLElement} cardElement The element for the card.
  * @return {Array[Card]}      An array of cards
  */
@@ -931,9 +906,11 @@ function getStackFromCardElement(cardElement) {
 // Make the cards interactable
 $(".slot").droppable({
 	drop: function(event, ui) {
+		// drop is contingent on "accept", so this is a valid stack.
 		var stack = getStackFromCardElement(ui.draggable);
         var slot = $(this).data('slot');
 
+        // insert all from stack into the bottom of the slot.
         for (var i = 0; i < stack.length; i++) {
 			insertCard(stack[i], slot, slot.cards.length);
     	}
@@ -1012,6 +989,7 @@ function loadAltStyle() {
 	$('head').append('<link rel="stylesheet" type="text/css" href="css/noimages.css">');
 }
 
+// detect failed image load
 var triggeredWarning = false;
 $('#btn_dragon_red').on('error', function (data, handler) {
 	if (!triggeredWarning) {
@@ -1022,7 +1000,7 @@ $('#btn_dragon_red').on('error', function (data, handler) {
 	triggeredWarning = true;
 });
 
-$('html').keydown(function(){}); // for debugging in Chrome
+$('html').keydown(function(){}); // UI breakpoint for debugging in Chrome
 
 if (DEBUG_STYLE) {
 	loadAltStyle();

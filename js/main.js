@@ -853,36 +853,12 @@ function victoryScreen() {
 	}, 50);
 }
 
-$(document).ready(function () {
-
-if (useLocalStorage) {
-	if (localStorage.shenzhen_win_count === undefined) {
-		localStorage.shenzhen_win_count = 0;
-	}
+/**
+ * Loads the alternate stylesheet for when the images are missing.
+ */
+function loadAltStyle() {
+	$('head').append('<link rel="stylesheet" type="text/css" href="css/noimages.css">');
 }
-updateWinCount();
-
-var board = $('#cards');
-populateSlots(SLOTS, board);
-
-var cards = makeDeck();
-
-// if there is a hash in the url upon load, load that as the seed.
-startNewGame(cards, board, location.hash.replace('#', ''));
-
-$('#newGame').click(function() {
-	// clear the hash from the url.
-	history.pushState("", document.title, window.location.pathname + window.location.search);
-
-	startNewGame(cards, board);
-});
-
-$('#seedGame').click(function() {
-	// prompt the user for a seed.
-	var seed = prompt("Enter the random seed for this game.");
-	location.hash = seed;
-	startNewGame(cards, board, seed);
-});
 
 /**
  * Creates a stack of all cards including and stacked on top of the given card.
@@ -902,6 +878,38 @@ function getStackFromCardElement(cardElement) {
 
 	return stack;
 }
+
+var cards;
+$(document).ready(function () {
+
+if (useLocalStorage) {
+	if (localStorage.shenzhen_win_count === undefined) {
+		localStorage.shenzhen_win_count = 0;
+	}
+}
+updateWinCount();
+
+var board = $('#cards');
+populateSlots(SLOTS, board);
+
+cards = makeDeck();
+
+// if there is a hash in the url upon load, load that as the seed.
+startNewGame(cards, board, location.hash.replace('#', ''));
+
+$('#newGame').click(function() {
+	// clear the hash from the url.
+	history.pushState("", document.title, window.location.pathname + window.location.search);
+
+	startNewGame(cards, board);
+});
+
+$('#seedGame').click(function() {
+	// prompt the user for a seed.
+	var seed = prompt("Enter the random seed for this game.");
+	location.hash = seed;
+	startNewGame(cards, board, seed);
+});
 
 // Make the cards interactable
 $(".slot").droppable({
@@ -981,13 +989,6 @@ $(".card").draggable({
 		}
 	}
 });
-
-/**
- * Loads the alternate stylesheet for when the images are missing.
- */
-function loadAltStyle() {
-	$('head').append('<link rel="stylesheet" type="text/css" href="css/noimages.css">');
-}
 
 // detect failed image load
 var triggeredWarning = false;

@@ -660,9 +660,31 @@ function dragonBtnListener(b) {
 	};
 }
 
+/**
+ * Creates a function which either highlights or unhighlights dragons as specified by the button.
+ * @param  {DRAGON_BTNS item}  b    Button specification
+ * @param  {Boolean} isEnter If true, highlights the items. If false, removes the highlights.
+ * @return {Function}         The created function
+ */
+function dragonEnterLeaveListener(b, isEnter) {
+	return function () {
+		var cards = getSpecialCards(b.type);
+
+		for (var i = 0; i < cards.length; i++) {
+			if (isEnter) {
+				$(cards[i].element).addClass('card-highlight');
+			} else {
+				$(cards[i].element).removeClass('card-highlight');
+			}
+		}
+	};
+}
+
 for (var i = 0; i < DRAGON_BTNS.length; i++) {
 	var btn = DRAGON_BTNS[i];
 	$(btn.selector).click(dragonBtnListener(btn));
+	$(btn.selector).mouseenter(dragonEnterLeaveListener(btn, true));
+	$(btn.selector).mouseleave(dragonEnterLeaveListener(btn, false));
 }
 
 /**

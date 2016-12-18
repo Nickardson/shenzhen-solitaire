@@ -54,6 +54,16 @@ a {
 	z-index: 1;
 }
 
+.card.card-highlight {
+	border-radius: 8px;
+	background-image: linear-gradient( rgba(16, 125, 76, 0.5), rgba(255, 255, 255, 0)), url(../solitaire/card_front.png);
+}
+
+.card.card-hotspot {
+	border-radius: 8px;
+	background-image: radial-gradient(circle, rgba(255, 255, 255, 0) 50%, rgba(20, 50, 128, 0.5) 100%), url(../solitaire/card_front.png);
+}
+
 .card-reverse {
 	background-image: url(../solitaire/card_back.png)
 }

@@ -939,8 +939,10 @@ $('#newGame').click(function() {
 $('#seedGame').click(function() {
 	// prompt the user for a seed.
 	var seed = prompt("Enter the random seed for this game.");
-	location.hash = seed;
-	startNewGame(cards, board, seed);
+	if (seed !== null) {
+		location.hash = seed;
+		startNewGame(cards, board, seed);
+	}
 });
 
 // Make the cards interactable

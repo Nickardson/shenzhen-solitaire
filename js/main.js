@@ -18,7 +18,7 @@ var DEBUG_STYLE = false;
  * Time in milliseconds cards take moving around
  * @type {Number}
  */
-var CARD_ANIMATION_SPEED = 200;
+var CARD_ANIMATION_SPEED = 400;
 
 /**
  * Gap in pixels between cards when fanned out.
@@ -566,8 +566,10 @@ function onFieldUpdated() {
 		if (!isInVictory) {
 			localStorage.shenzhen_win_count++;
 			updateWinCount();
+			hasWon = true;
 		}
 		isInVictory = true;
+
 		// wait for any possible animations to finish.
 		setTimeout(function () {
 			victoryScreen();
@@ -833,7 +835,13 @@ function startNewGame(cards, board, seed) {
 
 function updateWinCount() {
 	if (useLocalStorage) {
-		$('#win_count').text(localStorage.shenzhen_win_count);
+		var won = localStorage.shenzhen_win_count,
+			lost = localStorage.shenzhen_loose_count,
+			ratio = lost > 0 ? won / lost : won;
+		
+		$('#win_count').text(won);
+		$('#loose_count').text(lost);
+		$('#ratio_count').text(parseFloat(ratio).toFixed(2));
 	}
 }
 
@@ -842,6 +850,7 @@ function updateWinCount() {
  * @type {Boolean}
  */
 var isInVictory = false;
+var hasWon = false;
 var looper; // the interval identifier for the cards dropping in the victory screen.
 /**
  * Runs the victory screen, where cards drop down the screen.
@@ -918,6 +927,9 @@ if (useLocalStorage) {
 	if (localStorage.shenzhen_win_count === undefined) {
 		localStorage.shenzhen_win_count = 0;
 	}
+	if (localStorage.shenzhen_loose_count === undefined) {
+		localStorage.shenzhen_loose_count = 0;
+	}
 }
 updateWinCount();
 
@@ -934,6 +946,9 @@ $('#newGame').click(function() {
 	history.pushState("", document.title, window.location.pathname + window.location.search);
 
 	startNewGame(cards, board);
+	if (!hasWon) localStorage.shenzhen_loose_count++;
+	hasWon = false;
+	updateWinCount();
 });
 
 $('#seedGame').click(function() {
@@ -942,6 +957,9 @@ $('#seedGame').click(function() {
 	if (seed !== null) {
 		location.hash = seed;
 		startNewGame(cards, board, seed);
+		if (!hasWon) localStorage.shenzhen_loose_count++;
+		hasWon = false;
+		updateWinCount();
 	}
 });
 

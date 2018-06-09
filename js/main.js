@@ -18,7 +18,7 @@ var DEBUG_STYLE = false;
  * Time in milliseconds cards take moving around
  * @type {Number}
  */
-var CARD_ANIMATION_SPEED = 400;
+var CARD_ANIMATION_SPEED = 300;
 
 /**
  * Gap in pixels between cards when fanned out.

@@ -12,9 +12,22 @@
 }
 
 .slot {
-	border: 4px dotted rgba(255, 255, 255, 0.10);
 	box-sizing: border-box;
 	border-radius: 10px;
+}
+
+.slot-spare {
+	border: 4px dotted rgba(255, 255, 255, 0.10);
+}
+
+.slot-flower, .slot-out {
+	border: 2px solid rgba(255, 255, 255, 0.10);
+}
+
+.slot-tray {
+	background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.05) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.05) 75%), linear-gradient(45deg, rgba(255, 255, 255, 0.05) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.05) 75%);
+	background-size: 10px 10px;
+	background-position: 0 0, 5px 5px;
 }
 
 #board {

@@ -67,7 +67,6 @@ a {
 }
 
 .card.card-highlight {
-	border-radius: 8px;
 	background-image: linear-gradient( rgba(16, 125, 76, 0.5), rgba(255, 255, 255, 0)), url(../solitaire/card_front.png);
 }
 

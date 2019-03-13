@@ -1034,6 +1034,8 @@ $(".card").draggable({
 
 // detect failed image load
 var triggeredWarning = false;
+
+// prepare for a canary check for if we have images
 $('#canary').on('error', function (data, handler) {
 	if (!triggeredWarning) {
 		$('#image_load_error').text("Couldn't load an image from the original game. If you own SHENZHEN I/O, copy the game's \"Content/textures/solitaire\" folder into the \"solitaire\" directory of the cloned repository.");
@@ -1042,6 +1044,9 @@ $('#canary').on('error', function (data, handler) {
 	}
 	triggeredWarning = true;
 });
+
+// start the canary check
+$('#canary').attr('src', 'solitaire/button_red_up.png');
 
 $('html').keydown(function(){}); // UI breakpoint for debugging in Chrome
 

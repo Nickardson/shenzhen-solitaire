@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,6 +10,7 @@
 	<link rel="stylesheet" type="text/css" href="lib/jquery-ui.structure.min.css">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
+
 <body>
 	<div id="board">
 		<div id="cards"></div>
@@ -18,20 +20,26 @@
 			<span class="info-left-text">
 				<span id="win_count">?</span> wins
 			</span>
-			<span class="info-text">
-				Adaptation created by Nickardson. Gameplay by Zachtronics, from the game <a href="http://store.steampowered.com/app/504210/">SHENZHEN I/O</a>
-			</span>
 		</div>
 
-		<img class="btn-dragon" id="btn_dragon_red" alt="&#x004E2D;" src="solitaire/button_red_up.png"/>
-		<img class="btn-dragon" id="btn_dragon_green" alt="&#x024F35;" src="solitaire/button_green_up.png"/>
-		<img class="btn-dragon" id="btn_dragon_white" alt="&#x00767D;" src="solitaire/button_white_up.png"/>
+		<button class="btn-dragon" id="btn_dragon_red"></button>
+		<button class="btn-dragon" id="btn_dragon_green"></button>
+		<button class="btn-dragon" id="btn_dragon_white"></button>
 	</div>
 
+	<div class="info-text">
+		<div id="image_load_error"></div>
+		<div>Adaptation created by Nickardson. Gameplay by Zachtronics, from the game <a href="http://store.steampowered.com/app/504210/">SHENZHEN I/O</a>. <a href="https://github.com/Nickardson/shenzhen-solitaire">GitHub Repo</a></div>
+	</div>
+
+	
 	<script src="lib/jquery.min.js"></script>
 	<script src="lib/jquery-ui.min.js"></script>
 	<script src="lib/jquery.ui.touch-punch.js"></script>
 	<script src="lib/seedrandom.min.js"></script>
 	<script src="js/main.js"></script>
+
+	<img id="canary" alt="" src="solitaire/button_red_up.png" />
 </body>
+
 </html>

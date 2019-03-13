@@ -34,7 +34,7 @@ var SUITS = {
 		color: '#17714e',
 		prefix_large: "bamboo",
 		small: "bamboo",
-		recolor: bambooWhiteToGreen, // apply a color the the bamboo/green-dragon images since they changed to white.
+		fixAssetsFilter: bambooWhiteToGreen, // apply a color the the bamboo/green-dragon images since they changed to white.
 	},
 	CHARACTERS: {
 		order: 2,
@@ -55,7 +55,7 @@ var SPECIAL = {
 		order: 1,
 		large: "dragon_green",
 		small: "dragon_green",
-		recolor: bambooWhiteToGreen, // apply a color the the bamboo/green-dragon images since they changed to white.
+		fixAssetsFilter: bambooWhiteToGreen, // apply a color the the bamboo/green-dragon images since they changed to white.
 	},
 	DRAGON_RED: {
 		order: 2,
@@ -152,12 +152,12 @@ function createCard(value, suit) {
 	card.find('.card-mini-logo-a,.card-mini-logo-b')
 		.css({
 			'background-image': 'url(' + smallImg + ')',
-			'filter': suit.recolor
+			'filter': suit.fixAssetsFilter
 		});
 	card.find('.card-logo')
 		.css({
 			'background-image': 'url(' + largeImg + ')',
-			'filter': suit.recolor
+			'filter': suit.fixAssetsFilter
 		});
 
 	var c = {
@@ -186,12 +186,12 @@ function createSpecialCard(special) {
 	card.find('.card-logo-a,.card-logo-b')
 		.css({
 			'background-image': 'url(' + smallImg + ')',
-			'filter': special.recolor
+			'filter': special.fixAssetsFilter
 		});
 	card.find('.card-logo')
 		.css({
 			'background-image': 'url(' + largeImg + ')',
-			'filter': special.recolor
+			'filter': special.fixAssetsFilter
 		});
 
 	var c = {
@@ -475,9 +475,9 @@ function onFieldUpdated() {
 		var btn = DRAGON_BTNS[i];
 		if ($(btn.selector).data('complete') !== true) {
 			if (isDragonReady(btn.type)) {
-				$(btn.selector).attr('src', btn.imgReady).data('active', true);
+				$(btn.selector).css('background-image', "url('" + btn.imgReady + "')").data('active', true);
 			} else {
-				$(btn.selector).attr('src', btn.imgNone).data('active', false);
+				$(btn.selector).css('background-image', "url('" + btn.imgNone + "')").data('active', false);
 			}
 		}
 	}
@@ -670,7 +670,7 @@ function dragonBtnListener(b) {
 				for (i = 0; i < list.length; i++) {
 					tweenCard(list[i], openSlot, openSlot.cards.length, applyCardBacking);
 				}
-				$(b.selector).attr('src', b.imgComplete).data('complete', true);
+				$(b.selector).css('background-image', "url('" + b.imgComplete + "')").data('complete', true);
 				balanceCards();
 				onFieldUpdated();
 			}
@@ -1034,9 +1034,9 @@ $(".card").draggable({
 
 // detect failed image load
 var triggeredWarning = false;
-$('#btn_dragon_red').on('error', function (data, handler) {
+$('#canary').on('error', function (data, handler) {
 	if (!triggeredWarning) {
-		alert('Could not load an image! Did you copy the game\'s "Content/textures/solitaire" folder into the "solitaire" folder of the webpage?');
+		$('#image_load_error').text("Couldn't load an image from the original game. If you own SHENZHEN I/O, copy the game's \"Content/textures/solitaire\" folder into the \"solitaire\" directory of the cloned repository.");
 
 		loadAltStyle();
 	}

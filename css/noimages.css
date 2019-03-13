@@ -1,13 +1,20 @@
+/* filter is used to correct game assets and is not needed in the no-assets fallback */
+* {
+	filter: none !important;
+}
+
 .card {
 	background-color: lightgray;
 	border: 1px solid darkgray;
 	border-top: 2px solid white;
 	border-radius: 5px;
+	box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.24), 0px 0px 2px rgba(0, 0, 0, 0.12);
 }
 
 .slot {
-	border: 2px dashed rgba(255, 255, 255, 0.25);
+	border: 4px dotted rgba(255, 255, 255, 0.10);
 	box-sizing: border-box;
+	border-radius: 10px;
 }
 
 #board {
@@ -20,15 +27,32 @@
 	box-sizing: border-box;
 	border-style: none;
 	font-weight: bold;
+	text-align: center;
+	vertical-align: middle;
+	line-height: 64px;
+	border-radius: 50%;
+	box-shadow: inset 0px 2px 12px rgba(0, 0, 0, 0.9), 0px 0px 2px rgba(0, 0, 0, 0.32);
+}
+.btn-dragon[style*="_active.png"] {
+	background-color: #e7d7b1;
+}
+.btn-dragon[style*="_down.png"] {
+	background-color: #86754a;
 }
 
 #btn_dragon_red {
 	color: #ae2810;
 	text-shadow: 1px 1px 0 #000;
 }
+#btn_dragon_red:after {
+	content: "\004E2D";
+}
 #btn_dragon_green {
 	color: #17714e;
 	text-shadow: 1px 1px 0 #000;
+}
+#btn_dragon_green:after {
+	content: "\024F35";
 }
 #btn_dragon_white {
 	color: black;
@@ -38,10 +62,17 @@
 	 -1px  1px 0 #FFF,
 	  1px  1px 0 #FFF;
 }
+#btn_dragon_white:after {
+	content: "\00767D";
+}
+
+.card-logo:after {
+	font-weight: bold;
+	font-size: 70px;
+}
 
 .card-logo[style*="solitaire/large_icons/flower.png"]:after {
 	content: "\01F337";
-	font-size: 70px;
 	color: red;
 }
 .card-logo-a[style*="solitaire/small_icons/flower.png"]:after,
@@ -54,7 +85,6 @@
 
 .card-logo[style*="solitaire/large_icons/dragon_white.png"]:after {
 	content: "\00767D";
-	font-size: 70px;
 	color: black;
 	text-shadow:
 	 -1px -1px 0 #FFF,
@@ -72,9 +102,7 @@
 
 .card-logo[style*="solitaire/large_icons/dragon_red.png"]:after {
 	content: "\004E2D";
-	font-size: 70px;
 	color: #ae2810;
-	text-shadow: 1px 1px 0 #000;
 }
 .card-logo-a[style*="solitaire/small_icons/dragon_red.png"]:after,
 .card-logo-b[style*="solitaire/small_icons/dragon_red.png"]:after {
@@ -86,9 +114,7 @@
 
 .card-logo[style*="solitaire/large_icons/dragon_green.png"]:after {
 	content: "\024F35";
-	font-size: 70px;
 	color: #17714e;
-	text-shadow: 1px 1px 0 #000;
 }
 .card-logo-a[style*="solitaire/small_icons/dragon_green.png"]:after,
 .card-logo-b[style*="solitaire/small_icons/dragon_green.png"]:after {
@@ -96,4 +122,80 @@
 	content: "\024F35";
 	font-size: 16px;
 	color: #17714e;
+}
+
+.slot-flower {
+	text-align: center;
+	vertical-align: middle;
+}
+.slot-flower:after {
+	line-height: 237px;
+	content: "\01F337";
+	color: transparent;
+  text-shadow: 0 0 0 rgba(255, 255, 255, 0.1);
+	font-size: 70px;
+}
+
+/* numbers */
+.card-logo[style*="solitaire/large_icons/bamboo_1.png"]:after,
+.card-logo[style*="solitaire/large_icons/char_1.png"]:after,
+.card-logo[style*="solitaire/large_icons/coins_1.png"]:after {
+	content: "\4E00";
+	opacity: 0.5;
+}
+
+.card-logo[style*="solitaire/large_icons/bamboo_2.png"]:after,
+.card-logo[style*="solitaire/large_icons/char_2.png"]:after,
+.card-logo[style*="solitaire/large_icons/coins_2.png"]:after {
+	content: "\4E8C";
+	opacity: 0.5;
+}
+
+.card-logo[style*="solitaire/large_icons/bamboo_3.png"]:after,
+.card-logo[style*="solitaire/large_icons/char_3.png"]:after,
+.card-logo[style*="solitaire/large_icons/coins_3.png"]:after {
+	content: "\4E09";
+	opacity: 0.5;
+}
+
+.card-logo[style*="solitaire/large_icons/bamboo_4.png"]:after,
+.card-logo[style*="solitaire/large_icons/char_4.png"]:after,
+.card-logo[style*="solitaire/large_icons/coins_4.png"]:after {
+	content: "\56DB";
+	opacity: 0.5;
+}
+
+.card-logo[style*="solitaire/large_icons/bamboo_5.png"]:after,
+.card-logo[style*="solitaire/large_icons/char_5.png"]:after,
+.card-logo[style*="solitaire/large_icons/coins_5.png"]:after {
+	content: "\4E94";
+	opacity: 0.5;
+}
+
+.card-logo[style*="solitaire/large_icons/bamboo_6.png"]:after,
+.card-logo[style*="solitaire/large_icons/char_6.png"]:after,
+.card-logo[style*="solitaire/large_icons/coins_6.png"]:after {
+	content: "\516D";
+	opacity: 0.5;
+}
+
+.card-logo[style*="solitaire/large_icons/bamboo_7.png"]:after,
+.card-logo[style*="solitaire/large_icons/char_7.png"]:after,
+.card-logo[style*="solitaire/large_icons/coins_7.png"]:after {
+	content: "\4E03";
+	opacity: 0.5;
+}
+
+.card-logo[style*="solitaire/large_icons/bamboo_8.png"]:after,
+.card-logo[style*="solitaire/large_icons/char_8.png"]:after,
+.card-logo[style*="solitaire/large_icons/coins_8.png"]:after {
+	content: "\516B";
+	opacity: 0.5;
+}
+
+.card-logo[style*="solitaire/large_icons/bamboo_9.png"]:after,
+.card-logo[style*="solitaire/large_icons/char_9.png"]:after,
+.card-logo[style*="solitaire/large_icons/coins_9.png"]:after {
+	content: "\4E5D";
+	opacity: 0.5;
 }

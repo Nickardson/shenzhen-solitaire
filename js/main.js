@@ -26,12 +26,15 @@ var CARD_ANIMATION_SPEED = 200;
  */
 var CARD_STACK_GAP = 30;
 
+var bambooWhiteToGreen = 'sepia(100%) saturate(10000%) hue-rotate(63deg) brightness(.35)';
+
 var SUITS = {
 	BAMBOO: {
 		order: 1,
 		color: '#17714e',
 		prefix_large: "bamboo",
-		small: "bamboo"
+		small: "bamboo",
+		recolor: bambooWhiteToGreen, // apply a color the the bamboo/green-dragon images since they changed to white.
 	},
 	CHARACTERS: {
 		order: 2,
@@ -52,6 +55,7 @@ var SPECIAL = {
 		order: 1,
 		large: "dragon_green",
 		small: "dragon_green",
+		recolor: bambooWhiteToGreen, // apply a color the the bamboo/green-dragon images since they changed to white.
 	},
 	DRAGON_RED: {
 		order: 2,
@@ -140,19 +144,21 @@ function createCard(value, suit) {
 		'<div class="card-count-b"></div>' +
 		'<div class="card-mini-logo-a"></div>' +
 		'<div class="card-mini-logo-b"></div>' +
-		'<div class="card-logo""></div>' +
+		'<div class="card-logo"></div>' +
 	'</div>');
 
 	card.css('color', suit.color);
 	card.find('.card-count-a,.card-count-b').text(value);
-	card.find('.card-mini-logo-a,.card-mini-logo-b').css(
-		'background-image',
-		'url(' + smallImg + ')'
-		);
-	card.find('.card-logo').css(
-		'background-image',
-		'url(' + largeImg + ')'
-		);
+	card.find('.card-mini-logo-a,.card-mini-logo-b')
+		.css({
+			'background-image': 'url(' + smallImg + ')',
+			'filter': suit.recolor
+		});
+	card.find('.card-logo')
+		.css({
+			'background-image': 'url(' + largeImg + ')',
+			'filter': suit.recolor
+		});
 
 	var c = {
 		element: card,
@@ -174,17 +180,19 @@ function createSpecialCard(special) {
 	var card = $('<div class="card">' +
 		'<div class="card-logo-a"></div>' +
 		'<div class="card-logo-b"></div>' +
-		'<div class="card-logo""></div>' +
+		'<div class="card-logo"></div>' +
 	'</div>');
 
-	card.find('.card-logo-a,.card-logo-b').css(
-		'background-image',
-		'url(' + smallImg + ')'
-		);
-	card.find('.card-logo').css(
-		'background-image',
-		'url(' + largeImg + ')'
-		);
+	card.find('.card-logo-a,.card-logo-b')
+		.css({
+			'background-image': 'url(' + smallImg + ')',
+			'filter': special.recolor
+		});
+	card.find('.card-logo')
+		.css({
+			'background-image': 'url(' + largeImg + ')',
+			'filter': special.recolor
+		});
 
 	var c = {
 		element: card,

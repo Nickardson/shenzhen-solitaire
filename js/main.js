@@ -26,6 +26,11 @@ var CARD_ANIMATION_SPEED = 200;
  */
 var CARD_STACK_GAP = 30;
 
+/**
+ * The seed of the game being played right now.
+ */
+var currentSeed;
+
 var bambooWhiteToGreen = 'sepia(100%) saturate(10000%) hue-rotate(63deg) brightness(.35)';
 
 var SUITS = {
@@ -828,6 +833,9 @@ function startNewGame(cards, board, seed) {
 	if (!isNaN(parseInt(truSeed, 10))) {
 		truSeed = parseInt(truSeed, 10);
 	}
+
+	currentSeed = truSeed;
+
 	Math.seedrandom(truSeed);
 	console.log('Game id:', truSeed);
 
@@ -950,6 +958,13 @@ $('#seedGame').click(function() {
 	if (seed !== null) {
 		location.hash = seed;
 		startNewGame(cards, board, seed);
+	}
+});
+
+$('#retryGame').click(function() {
+	if (currentSeed !== null) {
+		location.hash = currentSeed;
+		startNewGame(cards, board, currentSeed);
 	}
 });
 

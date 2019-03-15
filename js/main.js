@@ -96,43 +96,114 @@ var SLOT_TALL = 500;
  * @type {Object}
  */
 var SLOTS = {
-	SPARE: [
-		{type: "spare", top: 18, left: 46},
-		{type: "spare", top: 18, left: 198},
-		{type: "spare", top: 18, left: 350}
+	SPARE: [{
+			type: "spare",
+			top: 18,
+			left: 46
+		},
+		{
+			type: "spare",
+			top: 18,
+			left: 198
+		},
+		{
+			type: "spare",
+			top: 18,
+			left: 350
+		}
 	],
-	FLOWER: [
-		{type: "flower", top: 18, left: 614}
+	FLOWER: [{
+		type: "flower",
+		top: 18,
+		left: 614
+	}],
+	OUT: [{
+			type: "out",
+			top: 18,
+			left: 806
+		},
+		{
+			type: "out",
+			top: 18,
+			left: 958
+		},
+		{
+			type: "out",
+			top: 18,
+			left: 1110
+		}
 	],
-	OUT: [
-		{type: "out", top: 18, left: 806},
-		{type: "out", top: 18, left: 958},
-		{type: "out", top: 18, left: 1110}
-	],
-	TRAY: [
-		{type: "tray", fan: true, top: 282, left: 46, height: SLOT_TALL},
-		{type: "tray", fan: true, top: 282, left: 198, height: SLOT_TALL},
-		{type: "tray", fan: true, top: 282, left: 350, height: SLOT_TALL},
-		{type: "tray", fan: true, top: 282, left: 502, height: SLOT_TALL},
-		{type: "tray", fan: true, top: 282, left: 654, height: SLOT_TALL},
-		{type: "tray", fan: true, top: 282, left: 806, height: SLOT_TALL},
-		{type: "tray", fan: true, top: 282, left: 958, height: SLOT_TALL},
-		{type: "tray", fan: true, top: 282, left: 1110, height: SLOT_TALL}
+	TRAY: [{
+			type: "tray",
+			fan: true,
+			top: 282,
+			left: 46,
+			height: SLOT_TALL
+		},
+		{
+			type: "tray",
+			fan: true,
+			top: 282,
+			left: 198,
+			height: SLOT_TALL
+		},
+		{
+			type: "tray",
+			fan: true,
+			top: 282,
+			left: 350,
+			height: SLOT_TALL
+		},
+		{
+			type: "tray",
+			fan: true,
+			top: 282,
+			left: 502,
+			height: SLOT_TALL
+		},
+		{
+			type: "tray",
+			fan: true,
+			top: 282,
+			left: 654,
+			height: SLOT_TALL
+		},
+		{
+			type: "tray",
+			fan: true,
+			top: 282,
+			left: 806,
+			height: SLOT_TALL
+		},
+		{
+			type: "tray",
+			fan: true,
+			top: 282,
+			left: 958,
+			height: SLOT_TALL
+		},
+		{
+			type: "tray",
+			fan: true,
+			top: 282,
+			left: 1110,
+			height: SLOT_TALL
+		}
 	]
 };
 
-jQuery.fn.visible = function() {
-    return this.css('visibility', 'visible');
+jQuery.fn.visible = function () {
+	return this.css('visibility', 'visible');
 };
 
-jQuery.fn.invisible = function() {
-    return this.css('visibility', 'hidden');
+jQuery.fn.invisible = function () {
+	return this.css('visibility', 'hidden');
 };
 
-jQuery.fn.visibilityToggle = function() {
-    return this.css('visibility', function(i, visibility) {
-        return (visibility == 'visible') ? 'hidden' : 'visible';
-    });
+jQuery.fn.visibilityToggle = function () {
+	return this.css('visibility', function (i, visibility) {
+		return (visibility == 'visible') ? 'hidden' : 'visible';
+	});
 };
 
 /**
@@ -150,7 +221,7 @@ function createCard(value, suit) {
 		'<div class="card-mini-logo-a"></div>' +
 		'<div class="card-mini-logo-b"></div>' +
 		'<div class="card-logo"></div>' +
-	'</div>');
+		'</div>');
 
 	card.css('color', suit.color);
 	card.find('.card-count-a,.card-count-b').text(value);
@@ -186,7 +257,7 @@ function createSpecialCard(special) {
 		'<div class="card-logo-a"></div>' +
 		'<div class="card-logo-b"></div>' +
 		'<div class="card-logo"></div>' +
-	'</div>');
+		'</div>');
 
 	card.find('.card-logo-a,.card-logo-b')
 		.css({
@@ -251,12 +322,12 @@ function insertCard(card, slot, depth) {
  * @param {Array[?]} array Array to shuffle in-place
  */
 function shuffleArray(array) {
-    for (var i = array.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        var temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
-    }
+	for (var i = array.length - 1; i > 0; i--) {
+		var j = Math.floor(Math.random() * (i + 1));
+		var temp = array[i];
+		array[i] = array[j];
+		array[j] = temp;
+	}
 }
 
 /**
@@ -297,9 +368,15 @@ function makeDeck() {
 	for (var value = 1; value <= 9; value++) {
 		for (s = 0; s < 3; s++) {
 			switch (s) {
-				case 0: suit = SUITS.BAMBOO; break;
-				case 1: suit = SUITS.CHARACTERS; break;
-				case 2: suit = SUITS.COINS; break;
+				case 0:
+					suit = SUITS.BAMBOO;
+					break;
+				case 1:
+					suit = SUITS.CHARACTERS;
+					break;
+				case 2:
+					suit = SUITS.COINS;
+					break;
 			}
 			cards.push(createCard(value, suit));
 		}
@@ -308,9 +385,15 @@ function makeDeck() {
 	for (s = 0; s < 3; s++) {
 		for (var i = 0; i < DRAGON_COUNT; i++) {
 			switch (s) {
-				case 0: suit = SPECIAL.DRAGON_GREEN; break;
-				case 1: suit = SPECIAL.DRAGON_WHITE; break;
-				case 2: suit = SPECIAL.DRAGON_RED; break;
+				case 0:
+					suit = SPECIAL.DRAGON_GREEN;
+					break;
+				case 1:
+					suit = SPECIAL.DRAGON_WHITE;
+					break;
+				case 2:
+					suit = SPECIAL.DRAGON_RED;
+					break;
 			}
 			cards.push(createSpecialCard(suit));
 		}
@@ -333,7 +416,7 @@ function placeCardsInTray(cards, board, traySet) {
 		var card = cards[i];
 		card.element.appendTo(board);
 		insertCard(card, traySet[col], row);
-		
+
 		row++;
 		if (row >= 5) {
 			row = 0;
@@ -446,8 +529,7 @@ function isDragonReady(type) {
 	}
 }
 
-var DRAGON_BTNS = [
-	{
+var DRAGON_BTNS = [{
 		type: SPECIAL.DRAGON_RED,
 		selector: '#btn_dragon_red',
 		imgNone: 'solitaire/button_red_up.png',
@@ -490,7 +572,7 @@ function onFieldUpdated() {
 	// move cards to the out tray when possible.
 	// it is movable when there are no cards that can be placed on that card, and the destination is 1 less than this card.
 	// this means that, for a BAMBOO 5, there must be no 4s anywhere in the tray or spare slots.
-	
+
 	// build a list of cards which are on the top of their stacks, and are potentially eligible to be automatically moved.
 	var movableTops = [];
 	var cards;
@@ -597,12 +679,12 @@ function onFieldUpdated() {
  */
 function tweenCard(card, slot, depth, callback) {
 	// remember the original position, move the card to determine the final position, then reset to original and interpolate between them.
-	
+
 	var oldOffset = card.element.offset();
 	insertCard(card, slot, depth);
 	var newOffset = card.element.offset();
 
-	var dY = newOffset.top - oldOffset.top, 
+	var dY = newOffset.top - oldOffset.top,
 		dX = newOffset.left - oldOffset.left;
 	var finalY = parseInt(card.element.css('top')),
 		finalX = parseInt(card.element.css('left'));
@@ -656,7 +738,7 @@ function dragonBtnListener(b) {
 		if ($(this).data('active') === true) {
 			var i;
 			var list = getSpecialCards(b.type);
-			
+
 			var openSlot;
 			for (i = 0; i < SLOTS.SPARE.length; i++) {
 				var set = SLOTS.SPARE[i].cards;
@@ -819,11 +901,11 @@ function sortCards(cards) {
 function startNewGame(cards, board, seed) {
 	clearInterval(looper);
 	looper = undefined;
-	
+
 	// TODO: start cards face down in the flower slot, then move them into place.
-	
+
 	sortCards(cards);
-	
+
 	var truSeed = seed;
 	// use time-based seed if there is no seed, or is an empty string.
 	if (seed === undefined || (typeof seed === "string" && seed.length === 0)) {
@@ -840,7 +922,7 @@ function startNewGame(cards, board, seed) {
 	console.log('Game id:', truSeed);
 
 	shuffleArray(cards); // shuffle cards
-	
+
 	$('.card').finish().removeClass('card-reverse');
 	$('.btn-dragon').data('complete', false);
 	placeCardsInTray(cards, board, SLOTS.TRAY); // place cards
@@ -916,9 +998,9 @@ function loadAltStyle() {
 function getStackFromCardElement(cardElement) {
 	var card = $(cardElement).data('card');
 
-    var cardIndex = card.slot.cards.indexOf(card),
+	var cardIndex = card.slot.cards.indexOf(card),
 		cardLength = card.slot.cards.length;
-	
+
 	var stack = [];
 	for (var i = cardIndex; i < cardLength; i++) {
 		stack.push(card.slot.cards[i]);
@@ -930,143 +1012,143 @@ function getStackFromCardElement(cardElement) {
 var cards;
 $(document).ready(function () {
 
-if (useLocalStorage) {
-	if (localStorage.shenzhen_win_count === undefined) {
-		localStorage.shenzhen_win_count = 0;
+	if (useLocalStorage) {
+		if (localStorage.shenzhen_win_count === undefined) {
+			localStorage.shenzhen_win_count = 0;
+		}
 	}
-}
-updateWinCount();
+	updateWinCount();
 
-var board = $('#cards');
-populateSlots(SLOTS, board);
+	var board = $('#cards');
+	populateSlots(SLOTS, board);
 
-cards = makeDeck();
+	cards = makeDeck();
 
-// if there is a hash in the url upon load, load that as the seed.
-startNewGame(cards, board, location.hash.replace('#', ''));
+	// if there is a hash in the url upon load, load that as the seed.
+	startNewGame(cards, board, location.hash.replace('#', ''));
 
-$('#newGame').click(function() {
-	// clear the hash from the url.
-	history.pushState("", document.title, window.location.pathname + window.location.search);
+	$('#newGame').click(function () {
+		// clear the hash from the url.
+		history.pushState("", document.title, window.location.pathname + window.location.search);
 
-	startNewGame(cards, board);
-});
+		startNewGame(cards, board);
+	});
 
-$('#seedGame').click(function() {
-	// prompt the user for a seed.
-	var seed = prompt("Enter the random seed for this game.");
-	if (seed !== null) {
-		location.hash = seed;
-		startNewGame(cards, board, seed);
-	}
-});
+	$('#seedGame').click(function () {
+		// prompt the user for a seed.
+		var seed = prompt("Enter the random seed for this game.");
+		if (seed !== null) {
+			location.hash = seed;
+			startNewGame(cards, board, seed);
+		}
+	});
 
-$('#retryGame').click(function() {
-	if (currentSeed !== null) {
-		location.hash = currentSeed;
-		startNewGame(cards, board, currentSeed);
-	}
-});
+	$('#retryGame').click(function () {
+		if (currentSeed !== null) {
+			location.hash = currentSeed;
+			startNewGame(cards, board, currentSeed);
+		}
+	});
 
-// Make the cards interactable
-$(".slot").droppable({
-	drop: function(event, ui) {
-		// drop is contingent on "accept", so this is a valid stack.
-		var stack = getStackFromCardElement(ui.draggable);
-        var slot = $(this).data('slot');
+	// Make the cards interactable
+	$(".slot").droppable({
+		drop: function (event, ui) {
+			// drop is contingent on "accept", so this is a valid stack.
+			var stack = getStackFromCardElement(ui.draggable);
+			var slot = $(this).data('slot');
 
-        // insert all from stack into the bottom of the slot.
-        for (var i = 0; i < stack.length; i++) {
-			insertCard(stack[i], slot, slot.cards.length);
-    	}
-    	onFieldUpdated();
-	},
-	accept: function (draggable) {
-        var stack = getStackFromCardElement(draggable);
-        var slot = $(this).data('slot');
+			// insert all from stack into the bottom of the slot.
+			for (var i = 0; i < stack.length; i++) {
+				insertCard(stack[i], slot, slot.cards.length);
+			}
+			onFieldUpdated();
+		},
+		accept: function (draggable) {
+			var stack = getStackFromCardElement(draggable);
+			var slot = $(this).data('slot');
 
-		return canPlaceStack(stack, slot, slot.cards[slot.cards.length - 1]);
-	},
-	tolerance: "pointer"
-});
+			return canPlaceStack(stack, slot, slot.cards[slot.cards.length - 1]);
+		},
+		tolerance: "pointer"
+	});
 
-$(".card").draggable({
-	"cursor": 'url(assets/cursor_normal.png) 40 40, default',
-	"revert": "invalid",
-	"revertDuration": CARD_ANIMATION_SPEED,
-	helper: function() {
-		var cardSet = $('<div></div>');
-		cardSet.css({
-			"z-index": 100,
-			"display": "inline"
-		});
-
-		var card = $(this).data('card');
-		var cardIndex = card.slot.cards.indexOf(card),
-			cardLength = card.slot.cards.length;
-
-		for (var i = cardIndex, height = 0; i < cardLength; i++, height++) {
-			var e = card.slot.cards[i].element.clone();
-			e.css({
-				top: height * CARD_STACK_GAP,
-				left: "",
+	$(".card").draggable({
+		"cursor": 'url(assets/cursor_normal.png) 40 40, default',
+		"revert": "invalid",
+		"revertDuration": CARD_ANIMATION_SPEED,
+		helper: function () {
+			var cardSet = $('<div></div>');
+			cardSet.css({
+				"z-index": 100,
+				"display": "inline"
 			});
-			cardSet.append(e);
-		}
-		return cardSet;
-	},
-	start: function (event, ui) {
-		var card = $(this).data('card');
-        
-        var stack = [];
-    	var cardIndex = card.slot.cards.indexOf(card),
-			cardLength = card.slot.cards.length;
-		var i;
-		for (i = cardIndex; i < cardLength; i++) {
-			stack.push(card.slot.cards[i]);
-		}
-        
-        if (!card.element.is(':animated') && canPickUpStack(stack, card.slot)) {
-        	for (i = 0; i < stack.length; i++) {
-        		stack[i].element.invisible();
-        	}
-        } else {
-        	event.stopPropagation();
-        	event.stopImmediatePropagation();
-			event.preventDefault();
-        }
-	},
-	stop: function (event, ui) {
-		var card = $(this).data('card');
-        
-        var cardIndex = card.slot.cards.indexOf(card),
-			cardLength = card.slot.cards.length;
-		for (var i = cardIndex; i < cardLength; i++) {
-			card.slot.cards[i].element.visible();
-		}
-	}
-});
 
-// detect failed image load
-var triggeredWarning = false;
+			var card = $(this).data('card');
+			var cardIndex = card.slot.cards.indexOf(card),
+				cardLength = card.slot.cards.length;
 
-// prepare for a canary check for if we have images
-$('#canary').on('error', function (data, handler) {
-	if (!triggeredWarning) {
-		$('#image_load_error').text("Couldn't load an image from the original game. If you own SHENZHEN I/O, copy the game's \"Content/textures/solitaire\" folder into the \"solitaire\" directory of the cloned repository.");
+			for (var i = cardIndex, height = 0; i < cardLength; i++, height++) {
+				var e = card.slot.cards[i].element.clone();
+				e.css({
+					top: height * CARD_STACK_GAP,
+					left: "",
+				});
+				cardSet.append(e);
+			}
+			return cardSet;
+		},
+		start: function (event, ui) {
+			var card = $(this).data('card');
 
+			var stack = [];
+			var cardIndex = card.slot.cards.indexOf(card),
+				cardLength = card.slot.cards.length;
+			var i;
+			for (i = cardIndex; i < cardLength; i++) {
+				stack.push(card.slot.cards[i]);
+			}
+
+			if (!card.element.is(':animated') && canPickUpStack(stack, card.slot)) {
+				for (i = 0; i < stack.length; i++) {
+					stack[i].element.invisible();
+				}
+			} else {
+				event.stopPropagation();
+				event.stopImmediatePropagation();
+				event.preventDefault();
+			}
+		},
+		stop: function (event, ui) {
+			var card = $(this).data('card');
+
+			var cardIndex = card.slot.cards.indexOf(card),
+				cardLength = card.slot.cards.length;
+			for (var i = cardIndex; i < cardLength; i++) {
+				card.slot.cards[i].element.visible();
+			}
+		}
+	});
+
+	// detect failed image load
+	var triggeredWarning = false;
+
+	// prepare for a canary check for if we have images
+	$('#canary').on('error', function (data, handler) {
+		if (!triggeredWarning) {
+			$('#image_load_error').text("Couldn't load an image from the original game. If you own SHENZHEN I/O, copy the game's \"Content/textures/solitaire\" folder into the \"solitaire\" directory of the cloned repository.");
+
+			loadAltStyle();
+		}
+		triggeredWarning = true;
+	});
+
+	// start the canary check
+	$('#canary').attr('src', 'solitaire/button_red_up.png');
+
+	$('html').keydown(function () {}); // UI breakpoint for debugging in Chrome
+
+	if (DEBUG_STYLE) {
 		loadAltStyle();
 	}
-	triggeredWarning = true;
-});
-
-// start the canary check
-$('#canary').attr('src', 'solitaire/button_red_up.png');
-
-$('html').keydown(function(){}); // UI breakpoint for debugging in Chrome
-
-if (DEBUG_STYLE) {
-	loadAltStyle();
-}
 
 });

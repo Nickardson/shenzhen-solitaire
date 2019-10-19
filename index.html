@@ -18,6 +18,9 @@
 			<button class="bottom-button" id="newGame">New Game</button>
 			<!-- <button class="bottom-button" id="seedGame">Seed Game</button> -->
 			<button class="bottom-button" id="retryGame">Retry Game</button>
+			<label id="toggleColorblindContainer" class="bottom-button" for="toggleColorblind">
+				<input type="checkbox" id="toggleColorblind" name="toggleColorblind" /> Colorblind
+			</label>
 
 			<span class="info-left-text">
 				<span id="win_count">?</span> wins
@@ -30,26 +33,25 @@
 	</div>
 
 	<div class="info-text">
-		<div id="image_load_error"></div>
 		<div>
 			<h2>How to Play</h2>
 			<p>
-				The goal of the game is to move all cards off the center tableau.
+				The goal of the game is to move all cards off the center, and into the upper left and right.
 				<ul>
-					<li>Move numbered cards to the upper-right foundation</li>
-					<li>Move logoed 'Dragon' cards to the upper-left foundation.</li>
+					<li>Move numbered cards to the upper-right</li>
+					<li>Move the 'Dragon' cards (with logos) to the upper-left.</li>
 				</ul>
 			</p>
 
 			<h3>Numbered Cards</h3>
 			<p>
-				Numbered cards can stack on the tableau, with smaller numbers stacked on larger numbers.
+				Numbered cards can stack, with smaller numbers stacked on larger numbers.
 			</p>
 			<p>
 				Cards can't be stacked on Dragons, or on cards of the same suit.
 			</p>
 			<p>
-				Multiple number cards can be moved around the tableau if they form a valid stack.
+				Multiple number cards can be moved around if they're stacked correctly.
 			</p>
 
 			<h3>Dragon Cards</h3>
@@ -58,7 +60,7 @@
 			</p>
 			<p>
 				If the four dragons of a suit are uncovered and a slot is available, clicking the Dragon button moves
-				that suit to a free slot in the upper-left foundation.
+				that suit to a free slot in the upper-left.
 			</p>
 
 			<h3>About</h3>
@@ -66,6 +68,8 @@
 				Adaptation created by Nickardson. Gameplay by Zachtronics, from the game <a href="http://store.steampowered.com/app/504210/">SHENZHEN
 					I/O</a>. <a href="https://github.com/Nickardson/shenzhen-solitaire">GitHub Repo</a>
 			</p>
+			<p>Ideas? Comments? <a href="http://tgratzer.com/contact">Send me a message!</a></p>
+			<div id="image_load_error"></div>
 		</div>
 	</div>
 

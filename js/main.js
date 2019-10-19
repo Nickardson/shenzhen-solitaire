@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 var useLocalStorage = (typeof localStorage !== 'undefined');
 
@@ -37,45 +37,49 @@ var SUITS = {
 	BAMBOO: {
 		order: 1,
 		color: '#17714e',
-		prefix_large: "bamboo",
-		small: "bamboo",
+		prefix_large: 'bamboo',
+		small: 'bamboo',
 		fixAssetsFilter: bambooWhiteToGreen, // apply a color the the bamboo/green-dragon images since they changed to white.
 	},
 	CHARACTERS: {
 		order: 2,
 		color: '#000000',
-		prefix_large: "char",
-		small: "characters"
+		prefix_large: 'char',
+		small: 'characters'
 	},
 	COINS: {
 		order: 3,
 		color: '#ae2810',
-		prefix_large: "coins",
-		small: "coins"
+		prefix_large: 'coins',
+		small: 'coins'
 	}
 };
 
 var SPECIAL = {
 	DRAGON_GREEN: {
 		order: 1,
-		large: "dragon_green",
-		small: "dragon_green",
+		large: 'dragon_green',
+		small: 'dragon_green',
+		equivalentSuit: 'bamboo',
 		fixAssetsFilter: bambooWhiteToGreen, // apply a color the the bamboo/green-dragon images since they changed to white.
 	},
 	DRAGON_RED: {
 		order: 2,
-		large: "dragon_red",
-		small: "dragon_red",
+		large: 'dragon_red',
+		small: 'dragon_red',
+		equivalentSuit: 'coins',
 	},
 	DRAGON_WHITE: {
 		order: 3,
-		large: "dragon_white",
-		small: "dragon_white",
+		large: 'dragon_white',
+		small: 'dragon_white',
+		equivalentSuit: 'characters',
 	},
 	FLOWER: {
 		order: 4,
-		large: "flower",
-		small: "flower",
+		large: 'flower',
+		small: 'flower',
+		equivalentSuit: 'flower',
 	}
 };
 
@@ -96,94 +100,99 @@ var SLOT_TALL = 500;
  * @type {Object}
  */
 var SLOTS = {
-	SPARE: [{
-			type: "spare",
+	SPARE: [
+		{
+			type: 'spare',
 			top: 18,
 			left: 46
 		},
 		{
-			type: "spare",
+			type: 'spare',
 			top: 18,
 			left: 198
 		},
 		{
-			type: "spare",
+			type: 'spare',
 			top: 18,
 			left: 350
 		}
 	],
-	FLOWER: [{
-		type: "flower",
-		top: 18,
-		left: 614
-	}],
-	OUT: [{
-			type: "out",
+	FLOWER: [
+		{
+			type: 'flower',
+			top: 18,
+			left: 614
+		}
+	],
+	OUT: [
+		{
+			type: 'out',
 			top: 18,
 			left: 806
 		},
 		{
-			type: "out",
+			type: 'out',
 			top: 18,
 			left: 958
 		},
 		{
-			type: "out",
+			type: 'out',
 			top: 18,
 			left: 1110
 		}
 	],
-	TRAY: [{
-			type: "tray",
+	TRAY: [
+		{
+			type: 'tray',
 			fan: true,
 			top: 282,
 			left: 46,
 			height: SLOT_TALL
 		},
 		{
-			type: "tray",
+			type: 'tray',
 			fan: true,
 			top: 282,
 			left: 198,
 			height: SLOT_TALL
 		},
 		{
-			type: "tray",
+			type: 'tray',
 			fan: true,
 			top: 282,
 			left: 350,
 			height: SLOT_TALL
 		},
 		{
-			type: "tray",
+			type: 'tray',
 			fan: true,
 			top: 282,
 			left: 502,
 			height: SLOT_TALL
 		},
 		{
-			type: "tray",
+			type: 'tray',
 			fan: true,
 			top: 282,
 			left: 654,
 			height: SLOT_TALL
 		},
 		{
-			type: "tray",
+			type: 'tray',
 			fan: true,
 			top: 282,
 			left: 806,
 			height: SLOT_TALL
 		},
 		{
-			type: "tray",
+			type: 'tray',
 			fan: true,
 			top: 282,
 			left: 958,
 			height: SLOT_TALL
 		},
 		{
-			type: "tray",
+			type: 'tray',
 			fan: true,
 			top: 282,
 			left: 1110,
@@ -215,7 +224,7 @@ jQuery.fn.visibilityToggle = function () {
 function createCard(value, suit) {
 	var smallImg = 'solitaire/small_icons/' + suit.small + '.png';
 	var largeImg = 'solitaire/large_icons/' + suit.prefix_large + '_' + value + '.png';
-	var card = $('<div class="card nickardson">' +
+	var card = $('<div class="card card-numbered nickardson card-' + suit.small + ' card-' + value + '">' +
 		'<div class="card-count-a"></div>' +
 		'<div class="card-count-b"></div>' +
 		'<div class="card-mini-logo-a"></div>' +
@@ -253,7 +262,7 @@ function createCard(value, suit) {
 function createSpecialCard(special) {
 	var smallImg = 'solitaire/small_icons/' + special.small + '.png';
 	var largeImg = 'solitaire/large_icons/' + special.large + '.png';
-	var card = $('<div class="card">' +
+	var card = $('<div class="card card-special card-' + special.equivalentSuit + '">' +
 		'<div class="card-logo-a"></div>' +
 		'<div class="card-logo-b"></div>' +
 		'<div class="card-logo"></div>' +
@@ -298,7 +307,7 @@ function insertCard(card, slot, depth) {
 	if (depth === 0) {
 		e.prepend(ce);
 	} else {
-		var target = e.find(".card:nth-child(" + depth + ")");
+		var target = e.find('.card:nth-child(' + depth + ')');
 		if (target.length !== 0) {
 			target.after(ce);
 		} else {
@@ -311,8 +320,8 @@ function insertCard(card, slot, depth) {
 		h = depth * CARD_STACK_GAP;
 	}
 	card.element.css({
-		"top": h + 'px',
-		"left": 0
+		'top': h + 'px',
+		'left': 0
 	});
 }
 
@@ -344,7 +353,7 @@ function populateSlots(slots, board) {
 				var slot = $('<div class="slot"></div>').css({
 					top: list[i].top,
 					left: list[i].left
-				}).addClass("slot-" + list[i].type);
+				}).addClass('slot-' + list[i].type);
 				if (list[i].height !== undefined) {
 					slot.css('height', list[i].height);
 				}
@@ -530,26 +539,26 @@ function isDragonReady(type) {
 }
 
 var DRAGON_BTNS = [{
-		type: SPECIAL.DRAGON_RED,
-		selector: '#btn_dragon_red',
-		imgNone: 'solitaire/button_red_up.png',
-		imgReady: 'solitaire/button_red_active.png',
-		imgComplete: 'solitaire/button_red_down.png',
-	},
-	{
-		type: SPECIAL.DRAGON_GREEN,
-		selector: '#btn_dragon_green',
-		imgNone: 'solitaire/button_green_up.png',
-		imgReady: 'solitaire/button_green_active.png',
-		imgComplete: 'solitaire/button_green_down.png',
-	},
-	{
-		type: SPECIAL.DRAGON_WHITE,
-		selector: '#btn_dragon_white',
-		imgNone: 'solitaire/button_white_up.png',
-		imgReady: 'solitaire/button_white_active.png',
-		imgComplete: 'solitaire/button_white_down.png',
-	}
+	type: SPECIAL.DRAGON_RED,
+	selector: '#btn_dragon_red',
+	imgNone: 'solitaire/button_red_up.png',
+	imgReady: 'solitaire/button_red_active.png',
+	imgComplete: 'solitaire/button_red_down.png',
+},
+{
+	type: SPECIAL.DRAGON_GREEN,
+	selector: '#btn_dragon_green',
+	imgNone: 'solitaire/button_green_up.png',
+	imgReady: 'solitaire/button_green_active.png',
+	imgComplete: 'solitaire/button_green_down.png',
+},
+{
+	type: SPECIAL.DRAGON_WHITE,
+	selector: '#btn_dragon_white',
+	imgNone: 'solitaire/button_white_up.png',
+	imgReady: 'solitaire/button_white_active.png',
+	imgComplete: 'solitaire/button_white_down.png',
+}
 ];
 
 /**
@@ -562,9 +571,9 @@ function onFieldUpdated() {
 		var btn = DRAGON_BTNS[i];
 		if ($(btn.selector).data('complete') !== true) {
 			if (isDragonReady(btn.type)) {
-				$(btn.selector).css('background-image', "url('" + btn.imgReady + "')").data('active', true);
+				$(btn.selector).css('background-image', 'url(\'' + btn.imgReady + '\')').data('active', true);
 			} else {
-				$(btn.selector).css('background-image', "url('" + btn.imgNone + "')").data('active', false);
+				$(btn.selector).css('background-image', 'url(\'' + btn.imgNone + '\')').data('active', false);
 			}
 		}
 	}
@@ -599,6 +608,7 @@ function onFieldUpdated() {
 	for (i = 0; i < movableTops.length; i++) {
 		var canOut = true;
 		var outSlot = undefined;
+		var cardAbove = undefined;
 
 		card = movableTops[i];
 		if (card.special == SPECIAL.FLOWER) {
@@ -607,9 +617,9 @@ function onFieldUpdated() {
 		} else if (card.value > 2) {
 			// output only if all cards with -1 value are in the out tray.
 			for (var suit in SUITS) {
-				var cardAbove = getCard(card.value - 1, SUITS[suit]);
+				cardAbove = getCard(card.value - 1, SUITS[suit]);
 				if (cardAbove) {
-					if (cardAbove.slot.type != "out") {
+					if (cardAbove.slot.type != 'out') {
 						canOut = false;
 						break;
 					} else {
@@ -622,9 +632,9 @@ function onFieldUpdated() {
 			}
 		} else if (card.value === 2) {
 			// output only if the '1' valued card with same suit is in the out tray.
-			var cardAbove = getCard(1, card.suit);
+			cardAbove = getCard(1, card.suit);
 			if (cardAbove) {
-				if (cardAbove.slot.type != "out") {
+				if (cardAbove.slot.type != 'out') {
 					canOut = false;
 				} else {
 					outSlot = cardAbove.slot;
@@ -698,7 +708,7 @@ function tweenCard(card, slot, depth, callback) {
 	card.element.animate({
 		top: finalY,
 		left: finalX
-	}, CARD_ANIMATION_SPEED, "swing", function () {
+	}, CARD_ANIMATION_SPEED, 'swing', function () {
 		card.element.css('z-index', '');
 
 		if (typeof callback === 'function') {
@@ -714,16 +724,16 @@ function tweenCard(card, slot, depth, callback) {
  * @param  {SLOT} slot  ignored
  * @param  {Integer} depth ignored
  */
-function applyCardBacking(card, slot, depth) {
-	card.element.addClass("card-reverse");
+function applyCardBacking(card, _slot, _depth) {
+	card.element.addClass('card-reverse');
 
 	// special backing
 	if (useLocalStorage) {
 		if (localStorage.shenzhen_win_count >= 100) {
-			card.element.addClass("grand_dragon");
+			card.element.addClass('grand_dragon');
 		}
 		if (localStorage.shenzhen_win_count >= 200) {
-			card.element.addClass("grand_dragon_2");
+			card.element.addClass('grand_dragon_2');
 		}
 	}
 }
@@ -757,7 +767,7 @@ function dragonBtnListener(b) {
 				for (i = 0; i < list.length; i++) {
 					tweenCard(list[i], openSlot, openSlot.cards.length, applyCardBacking);
 				}
-				$(b.selector).css('background-image', "url('" + b.imgComplete + "')").data('complete', true);
+				$(b.selector).css('background-image', 'url(\'' + b.imgComplete + '\')').data('complete', true);
 				balanceCards();
 				onFieldUpdated();
 			}
@@ -802,7 +812,7 @@ for (var i = 0; i < DRAGON_BTNS.length; i++) {
  * @return {Boolean}  Whether the stack can be picked up
  */
 function canPickUpStack(stack, sourceSlot) {
-	if (sourceSlot.type == "tray") {
+	if (sourceSlot.type == 'tray') {
 		if (stack.length == 1) {
 			return true;
 		} else {
@@ -817,7 +827,7 @@ function canPickUpStack(stack, sourceSlot) {
 			}
 		}
 		return true;
-	} else if (sourceSlot.type == "spare") {
+	} else if (sourceSlot.type == 'spare') {
 		// once all dragons are stacked in there, you can't move it.
 		return sourceSlot.cards.length != DRAGON_COUNT;
 	}
@@ -835,7 +845,7 @@ function canPickUpStack(stack, sourceSlot) {
  * @return {Boolean} Whether the stack can be placed on it.
  */
 function canPlaceStack(stack, destSlot, dest) {
-	if (destSlot.type == "tray") {
+	if (destSlot.type == 'tray') {
 		if (stack.length === 0 || dest === undefined) {
 			return true;
 		} else {
@@ -845,13 +855,13 @@ function canPlaceStack(stack, destSlot, dest) {
 				return false;
 			}
 		}
-	} else if (destSlot.type == "flower") {
+	} else if (destSlot.type == 'flower') {
 		// only flower allowed in flower slot, except during debug
 		return stack[0].special === SPECIAL.FLOWER || DEBUG === true;
-	} else if (destSlot.type == "spare") {
+	} else if (destSlot.type == 'spare') {
 		// only 1 card manually placed in spare slot
 		return destSlot.cards.length === 0 && stack.length == 1;
-	} else if (destSlot.type == "out") {
+	} else if (destSlot.type == 'out') {
 		// a single numbered card
 		if (stack.length === 1 && stack[0].value) {
 			if (dest === undefined) {
@@ -872,8 +882,8 @@ function canPlaceStack(stack, destSlot, dest) {
  */
 function sortCards(cards) {
 	cards.sort(function (a, b) {
-		var aHas = typeof a.value !== "undefined";
-		var bHas = typeof b.value !== "undefined";
+		var aHas = typeof a.value !== 'undefined';
+		var bHas = typeof b.value !== 'undefined';
 		if (aHas && bHas) {
 			if (a.value == b.value) {
 				return a.suit.order - b.suit.order;
@@ -908,7 +918,7 @@ function startNewGame(cards, board, seed) {
 
 	var truSeed = seed;
 	// use time-based seed if there is no seed, or is an empty string.
-	if (seed === undefined || (typeof seed === "string" && seed.length === 0)) {
+	if (seed === undefined || (typeof seed === 'string' && seed.length === 0)) {
 		truSeed = new Date().getTime();
 	}
 	// if input is a numeric string, convert to an integer ("123" and 123 behave differently)
@@ -919,6 +929,8 @@ function startNewGame(cards, board, seed) {
 	currentSeed = truSeed;
 
 	Math.seedrandom(truSeed);
+
+	// eslint-disable-next-line no-console
 	console.log('Game id:', truSeed);
 
 	shuffleArray(cards); // shuffle cards
@@ -990,6 +1002,22 @@ function loadAltStyle() {
 	$('head').append('<link rel="stylesheet" type="text/css" href="css/noimages.css">');
 }
 
+function setColorblindMode(isColorblindMode) {
+	var stylesheetId = 'colorblind-styles';
+
+	if (isColorblindMode) {
+		if (!$('#colorblind-styles').length) {
+			$('head').append('<link id="' + stylesheetId + '" rel="stylesheet" type="text/css" href="css/colorblind.css">');
+		}
+	} else {
+		$('#' + stylesheetId).remove();
+	}
+
+	if (useLocalStorage) {
+		localStorage.shenzhen_colorblind = isColorblindMode;
+	}
+}
+
 /**
  * Creates a stack of all cards including and stacked on top of the given card.
  * @param  {HTMLElement} cardElement The element for the card.
@@ -1029,14 +1057,14 @@ $(document).ready(function () {
 
 	$('#newGame').click(function () {
 		// clear the hash from the url.
-		history.pushState("", document.title, window.location.pathname + window.location.search);
+		history.pushState('', document.title, window.location.pathname + window.location.search);
 
 		startNewGame(cards, board);
 	});
 
 	$('#seedGame').click(function () {
 		// prompt the user for a seed.
-		var seed = prompt("Enter the random seed for this game.");
+		var seed = prompt('Enter the random seed for this game.');
 		if (seed !== null) {
 			location.hash = seed;
 			startNewGame(cards, board, seed);
@@ -1050,8 +1078,20 @@ $(document).ready(function () {
 		}
 	});
 
+	$('#toggleColorblind').change(function (event) {
+		setColorblindMode(event.target.checked);
+	});
+
+	// When the alt style
+	if (useLocalStorage) {
+		if (JSON.parse(localStorage.shenzhen_colorblind) === true) {
+			$('#toggleColorblind').prop('checked', true);
+			setColorblindMode(true);
+		}
+	}
+
 	// Make the cards interactable
-	$(".slot").droppable({
+	$('.slot').droppable({
 		drop: function (event, ui) {
 			// drop is contingent on "accept", so this is a valid stack.
 			var stack = getStackFromCardElement(ui.draggable);
@@ -1069,35 +1109,35 @@ $(document).ready(function () {
 
 			return canPlaceStack(stack, slot, slot.cards[slot.cards.length - 1]);
 		},
-		tolerance: "pointer"
+		tolerance: 'pointer'
 	});
 
-	$(".card").draggable({
-		"cursor": 'url(assets/cursor_normal.png) 40 40, default',
-		"revert": "invalid",
-		"revertDuration": CARD_ANIMATION_SPEED,
+	$('.card').draggable({
+		'cursor': 'url(assets/cursor_normal.png) 40 40, default',
+		'revert': 'invalid',
+		'revertDuration': CARD_ANIMATION_SPEED,
 		helper: function () {
 			var cardSet = $('<div></div>');
 			cardSet.css({
-				"z-index": 100,
-				"display": "inline"
+				'z-index': 100,
+				'display': 'inline'
 			});
 
 			var card = $(this).data('card');
 			var cardIndex = card.slot.cards.indexOf(card),
 				cardLength = card.slot.cards.length;
 
-			for (var i = cardIndex, height = 0; i < cardLength; i++, height++) {
+			for (var i = cardIndex, height = 0; i < cardLength; i++ , height++) {
 				var e = card.slot.cards[i].element.clone();
 				e.css({
 					top: height * CARD_STACK_GAP,
-					left: "",
+					left: '',
 				});
 				cardSet.append(e);
 			}
 			return cardSet;
 		},
-		start: function (event, ui) {
+		start: function (event, _ui) {
 			var card = $(this).data('card');
 
 			var stack = [];
@@ -1118,7 +1158,7 @@ $(document).ready(function () {
 				event.preventDefault();
 			}
 		},
-		stop: function (event, ui) {
+		stop: function (_event, _ui) {
 			var card = $(this).data('card');
 
 			var cardIndex = card.slot.cards.indexOf(card),
@@ -1133,9 +1173,9 @@ $(document).ready(function () {
 	var triggeredWarning = false;
 
 	// prepare for a canary check for if we have images
-	$('#canary').on('error', function (data, handler) {
+	$('#canary').on('error', function (_data, _handler) {
 		if (!triggeredWarning) {
-			$('#image_load_error').text("Couldn't load an image from the original game. If you own SHENZHEN I/O, copy the game's \"Content/textures/solitaire\" folder into the \"solitaire\" directory of the cloned repository.");
+			$('#image_load_error').text('Couldn\'t load an image from the original game. If you own SHENZHEN I/O, copy the game\'s "Content/textures/solitaire" folder into the "solitaire" directory of the cloned repository.');
 
 			loadAltStyle();
 		}
@@ -1145,7 +1185,7 @@ $(document).ready(function () {
 	// start the canary check
 	$('#canary').attr('src', 'solitaire/button_red_up.png');
 
-	$('html').keydown(function () {}); // UI breakpoint for debugging in Chrome
+	$('html').keydown(function () { }); // UI breakpoint for debugging in Chrome
 
 	if (DEBUG_STYLE) {
 		loadAltStyle();

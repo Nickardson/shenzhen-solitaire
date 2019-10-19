@@ -18,6 +18,10 @@
 			<button class="bottom-button" id="newGame">New Game</button>
 			<!-- <button class="bottom-button" id="seedGame">Seed Game</button> -->
 			<button class="bottom-button" id="retryGame">Retry Game</button>
+			<!-- toggleColorblindContainer doesn't show unless the no-images is active since colorblind w/ images is not yet supported -->
+			<label id="toggleColorblindContainer" class="bottom-button" for="toggleColorblind" style="display: none">
+				<input type="checkbox" id="toggleColorblind" name="toggleColorblind" /> Colorblind
+			</label>
 
 			<span class="info-left-text">
 				<span id="win_count">?</span> wins
@@ -30,7 +34,6 @@
 	</div>
 
 	<div class="info-text">
-		<div id="image_load_error"></div>
 		<div>
 			<h2>How to Play</h2>
 			<p>
@@ -66,6 +69,8 @@
 				Adaptation created by Nickardson. Gameplay by Zachtronics, from the game <a href="http://store.steampowered.com/app/504210/">SHENZHEN
 					I/O</a>. <a href="https://github.com/Nickardson/shenzhen-solitaire">GitHub Repo</a>
 			</p>
+			<p>Ideas? Comments? <a href="http://tgratzer.com/contact">Send me a message!</a></p>
+			<div id="image_load_error"></div>
 		</div>
 	</div>
 

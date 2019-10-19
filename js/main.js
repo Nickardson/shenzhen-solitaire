@@ -60,22 +60,26 @@ var SPECIAL = {
 		order: 1,
 		large: 'dragon_green',
 		small: 'dragon_green',
+		equivalentSuit: 'bamboo',
 		fixAssetsFilter: bambooWhiteToGreen, // apply a color the the bamboo/green-dragon images since they changed to white.
 	},
 	DRAGON_RED: {
 		order: 2,
 		large: 'dragon_red',
 		small: 'dragon_red',
+		equivalentSuit: 'coins',
 	},
 	DRAGON_WHITE: {
 		order: 3,
 		large: 'dragon_white',
 		small: 'dragon_white',
+		equivalentSuit: 'characters',
 	},
 	FLOWER: {
 		order: 4,
 		large: 'flower',
 		small: 'flower',
+		equivalentSuit: 'flower',
 	}
 };
 
@@ -220,7 +224,7 @@ jQuery.fn.visibilityToggle = function () {
 function createCard(value, suit) {
 	var smallImg = 'solitaire/small_icons/' + suit.small + '.png';
 	var largeImg = 'solitaire/large_icons/' + suit.prefix_large + '_' + value + '.png';
-	var card = $('<div class="card nickardson">' +
+	var card = $('<div class="card card-numbered nickardson card-' + suit.small + ' card-' + value + '">' +
 		'<div class="card-count-a"></div>' +
 		'<div class="card-count-b"></div>' +
 		'<div class="card-mini-logo-a"></div>' +
@@ -258,7 +262,7 @@ function createCard(value, suit) {
 function createSpecialCard(special) {
 	var smallImg = 'solitaire/small_icons/' + special.small + '.png';
 	var largeImg = 'solitaire/large_icons/' + special.large + '.png';
-	var card = $('<div class="card">' +
+	var card = $('<div class="card card-special card-' + special.equivalentSuit + '">' +
 		'<div class="card-logo-a"></div>' +
 		'<div class="card-logo-b"></div>' +
 		'<div class="card-logo"></div>' +
@@ -996,6 +1000,31 @@ function victoryScreen() {
  */
 function loadAltStyle() {
 	$('head').append('<link rel="stylesheet" type="text/css" href="css/noimages.css">');
+	$('#toggleColorblindContainer').css('display', 'unset');
+
+	// When the alt style
+	if (useLocalStorage) {
+		if (JSON.parse(localStorage.shenzhen_colorblind) === true) {
+			$('#toggleColorblind').prop('checked', true);
+			setNoImagesColorblindMode(true);
+		}
+	}
+}
+
+function setNoImagesColorblindMode(isColorblindMode) {
+	var stylesheetId = 'colorblind-styles';
+
+	if (isColorblindMode) {
+		if (!$('#colorblind-styles').length) {
+			$('head').append('<link id="' + stylesheetId + '" rel="stylesheet" type="text/css" href="css/noimages-colorblind.css">');
+		}
+	} else {
+		$('#' + stylesheetId).remove();
+	}
+
+	if (useLocalStorage) {
+		localStorage.shenzhen_colorblind = isColorblindMode;
+	}
 }
 
 /**
@@ -1056,6 +1085,10 @@ $(document).ready(function () {
 			location.hash = currentSeed;
 			startNewGame(cards, board, currentSeed);
 		}
+	});
+
+	$('#toggleColorblind').change(function (event) {
+		setNoImagesColorblindMode(event.target.checked);
 	});
 
 	// Make the cards interactable

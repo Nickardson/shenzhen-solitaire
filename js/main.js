@@ -1084,7 +1084,7 @@ $(document).ready(function () {
 
 	// When the alt style
 	if (useLocalStorage) {
-		if (JSON.parse(localStorage.shenzhen_colorblind) === true) {
+		if (localStorage.shenzhen_colorblind !== undefined && JSON.parse(localStorage.shenzhen_colorblind) === true) {
 			$('#toggleColorblind').prop('checked', true);
 			setColorblindMode(true);
 		}

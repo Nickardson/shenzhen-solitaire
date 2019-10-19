@@ -1000,23 +1000,14 @@ function victoryScreen() {
  */
 function loadAltStyle() {
 	$('head').append('<link rel="stylesheet" type="text/css" href="css/noimages.css">');
-	$('#toggleColorblindContainer').css('display', 'unset');
-
-	// When the alt style
-	if (useLocalStorage) {
-		if (JSON.parse(localStorage.shenzhen_colorblind) === true) {
-			$('#toggleColorblind').prop('checked', true);
-			setNoImagesColorblindMode(true);
-		}
-	}
 }
 
-function setNoImagesColorblindMode(isColorblindMode) {
+function setColorblindMode(isColorblindMode) {
 	var stylesheetId = 'colorblind-styles';
 
 	if (isColorblindMode) {
 		if (!$('#colorblind-styles').length) {
-			$('head').append('<link id="' + stylesheetId + '" rel="stylesheet" type="text/css" href="css/noimages-colorblind.css">');
+			$('head').append('<link id="' + stylesheetId + '" rel="stylesheet" type="text/css" href="css/colorblind.css">');
 		}
 	} else {
 		$('#' + stylesheetId).remove();
@@ -1088,8 +1079,16 @@ $(document).ready(function () {
 	});
 
 	$('#toggleColorblind').change(function (event) {
-		setNoImagesColorblindMode(event.target.checked);
+		setColorblindMode(event.target.checked);
 	});
+
+	// When the alt style
+	if (useLocalStorage) {
+		if (JSON.parse(localStorage.shenzhen_colorblind) === true) {
+			$('#toggleColorblind').prop('checked', true);
+			setColorblindMode(true);
+		}
+	}
 
 	// Make the cards interactable
 	$('.slot').droppable({

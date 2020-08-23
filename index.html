@@ -1,20 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="Description" content="Play Shenzhen IO Solitaire online. This unique twist on standard solitaire rules offers a fresh challenge!">
 	<title>SHENZHEN I/O Solitaire</title>
 	<link rel="stylesheet" type="text/css" href="lib/jquery-ui.min.css">
 	<link rel="stylesheet" type="text/css" href="lib/jquery-ui.structure.min.css">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="preload" as="style" href="css/noimages.css">
 
 	<!-- Global site tag (gtag.js) - Google Analytics -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-54279172-1"></script>
 	<script>
 		window.dataLayer = window.dataLayer || [];
-		function gtag(){dataLayer.push(arguments);}
+		function gtag() { dataLayer.push(arguments); }
 		gtag('js', new Date());
 
 		gtag('config', 'UA-54279172-3');
@@ -38,23 +40,33 @@
 			</span>
 		</div>
 
-		<button class="btn-dragon" id="btn_dragon_red"></button>
-		<button class="btn-dragon" id="btn_dragon_green"></button>
-		<button class="btn-dragon" id="btn_dragon_white"></button>
+		<button aria-label="Move Red Dragons" class="btn-dragon" id="btn_dragon_red"></button>
+		<button aria-label="Move Green Dragons" class="btn-dragon" id="btn_dragon_green"></button>
+		<button aria-label="Move White Dragons" class="btn-dragon" id="btn_dragon_white"></button>
 	</div>
 
 	<div class="info-text">
-		<div>
+		<main>
+			<h1>Shenzhen Solitare</h1>
 			<h2>How to Play</h2>
 			<p>
-				The goal of the game is to move all cards off the center, and into the upper left and right.
-				<ul>
-					<li>Move numbered cards to the upper-right</li>
-					<li>Move the 'Dragon' cards (with logos) to the upper-left.</li>
-				</ul>
+				The goal of the game is to move all cards off the center.
 			</p>
+			<ul>
+				<li>Move numbered cards to the upper-right.</li>
+				<li>Move the 'Dragon' cards (with logos) to the upper-left.</li>
+			</ul>
 
 			<h3>Numbered Cards</h3>
+			<div class="card-text-display card-text-display--green">
+				3
+			</div>
+			<div class="card-text-display card-text-display--red">
+				9
+			</div>
+			<div class="card-text-display card-text-display--white">
+				1
+			</div>
 			<p>
 				Numbered cards can stack, with smaller numbers stacked on larger numbers.
 			</p>
@@ -62,26 +74,39 @@
 				Cards can't be stacked on Dragons, or on cards of the same suit.
 			</p>
 			<p>
-				Multiple number cards can be moved around if they're stacked correctly.
+				Multiple number cards can be moved around if they're stacked correctly (in descending order with alternating suits).
 			</p>
 
 			<h3>Dragon Cards</h3>
+			<div class="card-logo-display">
+				<div class="card-logo-a"
+					style="background-image: url(&quot;solitaire/small_icons/dragon_green.png&quot;); filter: sepia(100%) saturate(10000%) hue-rotate(63deg) brightness(0.35);">
+				</div>
+			</div>
+			<div class="card-logo-display">
+				<div class="card-logo-a" style="background-image: url(&quot;solitaire/small_icons/dragon_red.png&quot;);"></div>
+			</div>
+			<div class="card-logo-display">
+				<div class="card-logo-a" style="background-image: url(&quot;solitaire/small_icons/dragon_white.png&quot;);">
+				</div>
+			</div>
 			<p>
 				Dragon cards can't be stacked.
 			</p>
 			<p>
-				If the four dragons of a suit are uncovered and a slot is available, clicking the Dragon button moves
+				If all four dragons of a suit are uncovered and a slot is available, clicking the Dragon button moves
 				that suit to a free slot in the upper-left.
 			</p>
 
 			<h3>About</h3>
 			<p>
-				Adaptation created by Nickardson. Gameplay by Zachtronics, from the game <a href="http://store.steampowered.com/app/504210/">SHENZHEN
+				Adaptation created by Taylor Gratzer. Original gameplay concept by Zachtronics, from the game <a
+					href="http://store.steampowered.com/app/504210/">SHENZHEN
 					I/O</a>. <a href="https://github.com/Nickardson/shenzhen-solitaire">GitHub Repo</a>
 			</p>
 			<p>Ideas? Comments? <a href="http://tgratzer.com/contact">Send me a message!</a></p>
 			<div id="image_load_error"></div>
-		</div>
+		</main>
 	</div>
 
 	<script src="lib/jquery.min.js"></script>

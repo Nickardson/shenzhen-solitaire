@@ -225,3 +225,37 @@ a, button, .btn-dragon, .bottom-button, .bottom-button * {
 	color: orange;
 	font-size: 1.5em;
 }
+
+.card-logo-display, .card-text-display {
+	position: relative;
+	display: inline-block;
+	width: 34px;
+	height: 48px;
+	background-color: #fafafa;
+	border-radius: 6px;
+	text-align: center;
+	vertical-align: middle;
+}
+.card-logo-display .card-logo-a {
+	left: 6px;
+	top: 12px;
+}
+
+.card-text-display {
+	color: black;
+	line-height: 48px;
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.card-text-display--red {
+	color: #ae2810;
+}
+
+.card-text-display--green {
+	color: #17714e;
+}
+
+.card-text-display--white {
+	color: black;
+}

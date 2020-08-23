@@ -1175,7 +1175,8 @@ $(document).ready(function () {
 	// prepare for a canary check for if we have images
 	$('#canary').on('error', function (_data, _handler) {
 		if (!triggeredWarning) {
-			$('#image_load_error').text('Couldn\'t load an image from the original game. If you own SHENZHEN I/O, copy the game\'s "Content/textures/solitaire" folder into the "solitaire" directory of the cloned repository.');
+			// eslint-disable-next-line no-console
+			console.warn('Couldn\'t load an image from the original game. If you own SHENZHEN I/O, copy the game\'s "Content/textures/solitaire" folder into the "solitaire" directory of the cloned repository.');
 
 			loadAltStyle();
 		}

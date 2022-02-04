@@ -66,8 +66,12 @@ a {
 	z-index: 1;
 }
 
-.card.card-highlight {
+.card.card-highlight:not(.grand_dragon) {
 	background-image: linear-gradient( rgba(16, 125, 76, 0.5), rgba(255, 255, 255, 0)), url(../solitaire/card_front.png);
+}
+
+.card.card-highlight.grand_dragon {
+	filter: brightness(1.2) !important;
 }
 
 .card.card-hotspot {
@@ -79,7 +83,11 @@ a {
 	background-image: url(../solitaire/card_back.png)
 }
 .card-reverse.grand_dragon {
-	background-image: url(../assets/card_back_upgrade.png)
+	background-image: url(../assets/card_back_upgrade.png);
+	background-size: cover;
+	background-position: center;
+	border: none;
+	background-color: transparent;
 }
 .card-reverse.grand_dragon.grand_dragon_2 {
 	background-image: url(../assets/card_back_upgrade_200.png)

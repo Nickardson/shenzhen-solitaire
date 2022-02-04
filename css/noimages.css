@@ -27,7 +27,7 @@
 }
 
 /* ugly hack fix */
-.card.card-highlight.card-reverse {
+.card.card-highlight.card-reverse:not(.grand_dragon) {
 	background-color: #c6f2ea;
 	background-image: linear-gradient(45deg, #0d5d50 25%, transparent 25%, transparent 75%, #0d5d50 75%), linear-gradient(45deg, #0d5d50 25%, transparent 25%, transparent 75%, #0d5d50 75%);
 }

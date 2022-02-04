@@ -911,6 +911,7 @@ function sortCards(cards) {
 function startNewGame(cards, board, seed) {
 	clearInterval(looper);
 	looper = undefined;
+	isInVictory = false;
 
 	// TODO: start cards face down in the flower slot, then move them into place.
 

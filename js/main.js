@@ -1207,10 +1207,10 @@ $(document).ready(function () {
 
 	music = new Audio("solitaire/Solitaire.ogg");
 	music.loop = true;
-    $(music).on('canplay', function() {
+	$(music).on('canplay', function() {
 		$('#playMusicButton').show();
 		$(music).off('canplay');
-    })
+	})
 	$(music).on('error', function (_data, _handler) {
 		console.warn('Couldn\'t load music from the original game. If you own SHENZHEN I/O, copy "Content/music/Solitaire.ogg" from the game into the "solitaire" directory of the cloned repository.');
 	});

@@ -201,6 +201,9 @@ var SLOTS = {
 	]
 };
 
+// Audio element for OST
+var music = null;
+
 jQuery.fn.visible = function () {
 	return this.css('visibility', 'visible');
 };
@@ -1079,6 +1082,21 @@ $(document).ready(function () {
 		}
 	});
 
+	$('#playMusicButton').click(function() {
+		music.play();
+		if (music.currentTime > 0 && music.currentTime < 5) {
+			music.currentTime = 0;
+		}
+		$('#playMusicButton').hide();
+		$('#pauseMusicButton').show();
+	});
+
+	$('#pauseMusicButton').click(function() {
+		music.pause();
+		$('#playMusicButton').show();
+		$('#pauseMusicButton').hide();
+	});
+
 	$('#toggleColorblind').change(function (event) {
 		setColorblindMode(event.target.checked);
 	});
@@ -1186,6 +1204,16 @@ $(document).ready(function () {
 
 	// start the canary check
 	$('#canary').attr('src', 'solitaire/button_red_up.png');
+
+	music = new Audio("solitaire/Solitaire.ogg");
+	music.loop = true;
+	$(music).on('canplay', function() {
+		$('#playMusicButton').show();
+		$(music).off('canplay');
+	})
+	$(music).on('error', function (_data, _handler) {
+		console.warn('Couldn\'t load music from the original game. If you own SHENZHEN I/O, copy "Content/music/Solitaire.ogg" from the game into the "solitaire" directory of the cloned repository.');
+	});
 
 	$('html').keydown(function () { }); // UI breakpoint for debugging in Chrome
 

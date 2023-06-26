@@ -221,6 +221,10 @@ a, button, .btn-dragon, .bottom-button, .bottom-button * {
 	text-align: center;
 }
 
+.bottom-button.music {
+	display: none;
+}
+
 .bottom-button:hover {
 	background-image: url(../assets/button_bottom_hover.png);
 }

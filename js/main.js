@@ -572,8 +572,49 @@ function onFieldUpdated() {
 	// prepare buttons if dragons are available
 	for (i = 0; i < DRAGON_BTNS.length; i++) {
 		var btn = DRAGON_BTNS[i];
+		var j;
 		if ($(btn.selector).data('complete') !== true) {
 			if (isDragonReady(btn.type)) {
+				// The only downside to taking a dragon is losing the spare slot.
+				// But if one of the dragons is already in a spare slot, or is alone
+				// in a tray slot, then that slot is already lost until the dragon is
+				// taken, so taking the dragon is at worst slot-neutral.
+				var shouldDragon = false;
+				for (j = 0; j < SLOTS.TRAY.length; j++) {
+					cards = SLOTS.TRAY[j].cards;
+					if (cards.length === 1 && cards[0].special === btn.type) {
+						shouldDragon = true;
+						break;
+					}
+				}
+				if (!shouldDragon) {
+					for (j = 0; j < SLOTS.SPARE.length; j++) {
+						cards = SLOTS.SPARE[j].cards;
+						if (cards.length === 1 && cards[0].special === btn.type) {
+							shouldDragon = true;
+							break;
+						}
+					}
+				}
+
+				// Also take a dragon if there are no numbers left, because at that
+				// point slots can only be used for dragons.
+				if (!shouldDragon) {
+					shouldDragon = true;
+					for (j = 0; j < SLOTS.OUT.length; j++) {
+						if (SLOTS.OUT[j].cards.length < 9) {
+							shouldDragon = false;
+							break;
+						}
+					}
+				}
+
+				if (shouldDragon && takeDragon(btn.type)) {
+					$(btn.selector).css('background-image', 'url(\'' + btn.imgComplete + '\')').data('complete', true);
+					setTimeout(onFieldUpdated, CARD_ANIMATION_SPEED);
+					return;
+				}
+
 				$(btn.selector).css('background-image', 'url(\'' + btn.imgReady + '\')').data('active', true);
 			} else {
 				$(btn.selector).css('background-image', 'url(\'' + btn.imgNone + '\')').data('active', false);
@@ -748,34 +789,46 @@ function applyCardBacking(card, _slot, _depth) {
  */
 function dragonBtnListener(b) {
 	return function () {
-		if ($(this).data('active') === true) {
-			var i;
-			var list = getSpecialCards(b.type);
-
-			var openSlot;
-			for (i = 0; i < SLOTS.SPARE.length; i++) {
-				var set = SLOTS.SPARE[i].cards;
-				// TODO: if any spare slot already has this dragon, go to that one instead.
-				if (set.length >= DRAGON_COUNT && set[0].special == b.type) {
-					return false;
-				}
-
-				if (set.length === 0 || set[0].special == b.type && set.length < DRAGON_COUNT) {
-					openSlot = SLOTS.SPARE[i];
-					break;
-				}
-			}
-
-			if (list.length > 0 && openSlot !== undefined) {
-				for (i = 0; i < list.length; i++) {
-					tweenCard(list[i], openSlot, openSlot.cards.length, applyCardBacking);
-				}
-				$(b.selector).css('background-image', 'url(\'' + b.imgComplete + '\')').data('complete', true);
-				balanceCards();
-				onFieldUpdated();
-			}
+		if ($(this).data('active') === true && takeDragon(b.type)) {
+			$(b.selector).css('background-image', 'url(\'' + b.imgComplete + '\')').data('complete', true);
+			balanceCards();
+			onFieldUpdated();
+		} else {
+			return false;
 		}
 	};
+}
+
+/**
+ * Moves all copies of a given dragon type to a spare slot.
+ * @param  {SPECIAL} type
+ * @return {Boolean} true if successful
+ */
+function takeDragon(type) {
+	var i;
+	var list = getSpecialCards(type);
+
+	var openSlot;
+	for (i = 0; i < SLOTS.SPARE.length; i++) {
+		var set = SLOTS.SPARE[i].cards;
+		// TODO: if any spare slot already has this dragon, go to that one instead.
+		if (set.length >= DRAGON_COUNT && set[0].special == type) {
+			return false;
+		}
+
+		if (set.length === 0 || set[0].special == type && set.length < DRAGON_COUNT) {
+			openSlot = SLOTS.SPARE[i];
+			break;
+		}
+	}
+
+	if (list.length > 0 && openSlot !== undefined) {
+		for (i = 0; i < list.length; i++) {
+			tweenCard(list[i], openSlot, openSlot.cards.length, applyCardBacking);
+		}
+		return true;
+	}
+	return false;
 }
 
 /**
@@ -1120,7 +1173,7 @@ $(document).ready(function () {
 			for (var i = 0; i < stack.length; i++) {
 				insertCard(stack[i], slot, slot.cards.length);
 			}
-			onFieldUpdated();
+			setTimeout(onFieldUpdated, CARD_ANIMATION_SPEED);
 		},
 		accept: function (draggable) {
 			var stack = getStackFromCardElement(draggable);

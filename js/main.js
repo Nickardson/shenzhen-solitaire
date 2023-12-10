@@ -658,10 +658,12 @@ function onFieldUpdated() {
 		if (card.special == SPECIAL.FLOWER) {
 			// flower can always move to flower slot.
 			outSlot = SLOTS.FLOWER[0];
-		} else if (card.value > 2) {
-			// output only if all cards with -1 value are in the out tray.
+		} else if (card.value > 1) {
+			// Output only if the -1 valued card with same suit
+			// and the -2 valued cards of the other suits
+			// are all in the out tray (if they exist).
 			for (var suit in SUITS) {
-				cardAbove = getCard(card.value - 1, SUITS[suit]);
+				cardAbove = getCard(card.value - (card.suit === SUITS[suit] ? 1 : 2), SUITS[suit]);
 				if (cardAbove) {
 					if (cardAbove.slot.type != 'out') {
 						canOut = false;
@@ -672,16 +674,6 @@ function onFieldUpdated() {
 							outSlot = cardAbove.slot;
 						}
 					}
-				}
-			}
-		} else if (card.value === 2) {
-			// output only if the '1' valued card with same suit is in the out tray.
-			cardAbove = getCard(1, card.suit);
-			if (cardAbove) {
-				if (cardAbove.slot.type != 'out') {
-					canOut = false;
-				} else {
-					outSlot = cardAbove.slot;
 				}
 			}
 		} else {

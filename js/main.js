@@ -786,6 +786,9 @@ function dragonBtnListener(b) {
  */
 function dragonEnterLeaveListener(b, isEnter) {
 	return function () {
+		if (dragging) {
+			return;
+		}
 		var cards = getSpecialCards(b.type);
 
 		for (var i = 0; i < cards.length; i++) {
@@ -1042,6 +1045,7 @@ function getStackFromCardElement(cardElement) {
 }
 
 var cards;
+var dragging = false;
 $(document).ready(function () {
 
 	if (useLocalStorage) {
@@ -1171,6 +1175,7 @@ $(document).ready(function () {
 				for (i = 0; i < stack.length; i++) {
 					stack[i].element.invisible();
 				}
+				dragging = true;
 			} else {
 				event.stopPropagation();
 				event.stopImmediatePropagation();
@@ -1178,6 +1183,7 @@ $(document).ready(function () {
 			}
 		},
 		stop: function (_event, _ui) {
+			dragging = false;
 			var card = $(this).data('card');
 
 			var cardIndex = card.slot.cards.indexOf(card),

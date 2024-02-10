@@ -611,16 +611,35 @@ function onFieldUpdated() {
 	for (i = 0; i < movableTops.length; i++) {
 		var canOut = true;
 		var outSlot = undefined;
-		var cardAbove = undefined;
 
 		card = movableTops[i];
 		if (card.special == SPECIAL.FLOWER) {
 			// flower can always move to flower slot.
 			outSlot = SLOTS.FLOWER[0];
-		} else if (card.value > 2) {
-			// output only if all cards with -1 value are in the out tray.
+		} else if (card.value > 1) {
+			// output only if the card of the same suit with -1 value is in the out tray,
+			// AND if all cards with different suits and -2 value are in the out tray.
 			for (var suit in SUITS) {
-				cardAbove = getCard(card.value - 1, SUITS[suit]);
+				var cardAbove;
+
+				if (card.suit === SUITS[suit]) {
+					// For checking the same suit, check if the value above has been placed.
+					cardAbove = getCard(card.value - 1, SUITS[suit]);
+				} else {
+					// For a different suit, the reasoning is more complex.
+					// The top card itself is free to move up if no other card would have a reason to be placed on it.
+					//   Cards placable on it would have a value -1 from the top card.
+					//   If the slot -1 from THAT card (-2 from the movable top card) is filled,
+					//   then the moment the -1 card is revealed it will be moved, so the top card has no reason to consider that card as a reason to stay.
+
+					// The 2 card doesn't care about the cards in other suits with -2 values.
+					if (card.value === 2) {
+						continue;
+					}
+
+					cardAbove = getCard(card.value - 2, SUITS[suit]);
+				}
+
 				if (cardAbove) {
 					if (cardAbove.slot.type != 'out') {
 						canOut = false;
@@ -631,16 +650,6 @@ function onFieldUpdated() {
 							outSlot = cardAbove.slot;
 						}
 					}
-				}
-			}
-		} else if (card.value === 2) {
-			// output only if the '1' valued card with same suit is in the out tray.
-			cardAbove = getCard(1, card.suit);
-			if (cardAbove) {
-				if (cardAbove.slot.type != 'out') {
-					canOut = false;
-				} else {
-					outSlot = cardAbove.slot;
 				}
 			}
 		} else {

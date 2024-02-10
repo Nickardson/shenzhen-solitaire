@@ -1073,29 +1073,34 @@ $(document).ready(function () {
 	startNewGame(cards, board, location.hash.replace('#', ''));
 
 	$('#newGame').click(function () {
+		// Replace the current state with the previous game
+		if (!location.hash) {
+			history.replaceState('', document.title, window.location.pathname + window.location.search + '#' + currentSeed);
+		}
 		// clear the hash from the url.
 		history.pushState('', document.title, window.location.pathname + window.location.search);
 
 		startNewGame(cards, board);
 	});
 
-	$('#seedGame').click(function () {
-		// prompt the user for a seed.
-		var seed = prompt('Enter the random seed for this game.');
-		if (seed !== null) {
-			location.hash = seed;
-			startNewGame(cards, board, seed);
-		}
-	});
-
 	$('#retryGame').click(function () {
 		if (currentSeed !== null) {
-			location.hash = currentSeed;
-			startNewGame(cards, board, currentSeed);
+			if (location.hash.replace('#', '') === currentSeed.toString()) {
+				startNewGame(cards, board, location.hash.replace('#', ''));
+			} else {
+				location.hash = currentSeed;
+				// Triggers hashchange
+			}
 		}
 	});
 
-	$('#playMusicButton').click(function() {
+	addEventListener("hashchange", function () {
+		if (location.hash.replace('#', '')) {
+			startNewGame(cards, board, location.hash.replace('#', ''));
+		}
+	});
+
+	$('#playMusicButton').click(function () {
 		music.play();
 		if (music.currentTime > 0 && music.currentTime < 5) {
 			music.currentTime = 0;
@@ -1104,7 +1109,7 @@ $(document).ready(function () {
 		$('#pauseMusicButton').show();
 	});
 
-	$('#pauseMusicButton').click(function() {
+	$('#pauseMusicButton').click(function () {
 		music.pause();
 		$('#playMusicButton').show();
 		$('#pauseMusicButton').hide();
@@ -1159,7 +1164,7 @@ $(document).ready(function () {
 			var cardIndex = card.slot.cards.indexOf(card),
 				cardLength = card.slot.cards.length;
 
-			for (var i = cardIndex, height = 0; i < cardLength; i++ , height++) {
+			for (var i = cardIndex, height = 0; i < cardLength; i++, height++) {
 				var e = card.slot.cards[i].element.clone();
 				e.css({
 					top: height * CARD_STACK_GAP,
@@ -1222,7 +1227,7 @@ $(document).ready(function () {
 
 	music = new Audio("solitaire/Solitaire.ogg");
 	music.loop = true;
-	$(music).on('canplay', function() {
+	$(music).on('canplay', function () {
 		$('#playMusicButton').show();
 		$(music).off('canplay');
 	})

@@ -66,11 +66,11 @@ a {
 	z-index: 1;
 }
 
-.card.card-highlight:not(.grand_dragon) {
+.card.card-highlight:not(.grand_dragon.card-reverse) {
 	background-image: linear-gradient( rgba(16, 125, 76, 0.5), rgba(255, 255, 255, 0)), url(../solitaire/card_front.png);
 }
 
-.card.card-highlight.grand_dragon {
+.card.card-reverse.card-highlight.grand_dragon {
 	filter: brightness(1.2) !important;
 }
 

@@ -955,6 +955,10 @@ function startNewGame(cards, board, seed) {
 	$('.btn-dragon').data('complete', false);
 	placeCardsInTray(cards, board, SLOTS.TRAY); // place cards
 	$('.card').visible();
+
+    // Remove grand dragon class
+	$('.card-special').removeClass('grand_dragon');
+	$('.card-special').removeClass('grand_dragon_2');
 }
 
 function updateWinCount() {

@@ -957,8 +957,8 @@ function startNewGame(cards, board, seed) {
 	$('.card').visible();
 
     // Remove grand dragon class
-	$('.card-special').removeClass('grand_dragon');
-	$('.card-special').removeClass('grand_dragon_2');
+    $('.card-special').removeClass('grand_dragon');
+    $('.card-special').removeClass('grand_dragon_2');
 }
 
 function updateWinCount() {
